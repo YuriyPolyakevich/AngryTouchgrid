@@ -5,7 +5,6 @@ public class SpawnerController : MonoBehaviour
 
 	public GameObject[] spawnObjects;
 
-
 	private void Start ()
 	{
 		SpawnObjects();
