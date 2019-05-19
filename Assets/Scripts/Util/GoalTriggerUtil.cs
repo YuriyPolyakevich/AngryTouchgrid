@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace a
+namespace Util
 {
     public class GoalTriggerUtil: MonoBehaviour
     {

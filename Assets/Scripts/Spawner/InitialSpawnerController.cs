@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class SpawnerController : MonoBehaviour
+public class InitialSpawnerController : MonoBehaviour
 {
 
 	public GameObject[] spawnObjects;

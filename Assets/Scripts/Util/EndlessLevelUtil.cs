@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Model;
 using UnityEngine;
 using Random = System.Random;
 
-namespace a
+namespace Util
 {
     //todo: transfer to database
     public static class EndlessLevelUtil

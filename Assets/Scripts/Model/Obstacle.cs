@@ -1,6 +1,7 @@
+using Model.Enumeration;
 using UnityEngine;
 
-namespace a
+namespace Model
 {
     public class Obstacle
     {
@@ -9,5 +10,7 @@ namespace a
         public Vector3 Direction { get; set; }
         public float RotationSpeed { get; set; }
         public float Speed { get; set; }
+
+        public ObstacleType Type { get; set ; }
     }
 }

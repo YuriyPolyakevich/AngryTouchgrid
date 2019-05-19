@@ -1,4 +1,4 @@
-namespace a.Enumeration
+namespace Model.Enumeration
 {
     public enum ObstacleType
     {

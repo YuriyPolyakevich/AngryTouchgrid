@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 23866027669757828}
   - component: {fileID: 135800742128132090}
   - component: {fileID: 54798458470804300}
+  - component: {fileID: 114439477424263724}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Ball
@@ -37,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1178361528512212}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15.6, y: 5.3, z: -98.4}
+  m_LocalPosition: {x: 41.58, y: 7, z: -141.24}
   m_LocalScale: {x: 7.676546, y: 8.257272, z: 7.691728}
   m_Children: []
   m_Father: {fileID: 0}
@@ -100,6 +101,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &114439477424263724
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1178361528512212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6c38b6d226d6c744b6759df40681146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &135800742128132090
 SphereCollider:
   m_ObjectHideFlags: 1
