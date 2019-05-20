@@ -5,6 +5,7 @@ namespace Controller
 	public class BallController : MonoBehaviour
 	{
 
+		
 		private Rigidbody _rigidBody;
 		private const float ToleranceValue = 0.005f;
 		private bool _isBallKicked;
@@ -21,7 +22,7 @@ namespace Controller
 			                  && _rigidBody.velocity.y < ToleranceValue
 			                  && _rigidBody.velocity.z < ToleranceValue)
 			{
-				Debug.unityLogger.Log("-1 life");
+				Debug.unityLogger.Log("You lost");
 			}
 		}
 

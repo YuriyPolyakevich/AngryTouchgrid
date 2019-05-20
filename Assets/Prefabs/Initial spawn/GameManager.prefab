@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4062858731116386}
-  - component: {fileID: 114490766488135220}
+  - component: {fileID: 114197970579456804}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -40,7 +40,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114490766488135220
+--- !u!114 &114197970579456804
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -48,12 +48,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1942345440410174}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef7d02c2b975ab1479b9460afcd5f0d1, type: 3}
+  m_Script: {fileID: 11500000, guid: c094f1ea3858ba04a9b01f3d56d76a1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   spawnObjects:
-  - {fileID: 1912177288112362, guid: 7340d1dc802e5364e8fc19a175d0f54c, type: 2}
-  - {fileID: 1369399862091514, guid: 5f49355a406dece4ab4a9277959855b1, type: 2}
-  - {fileID: 1015201524793642, guid: 21513b702967d624e943c1fa8de8bcdd, type: 2}
-  - {fileID: 1703206601454996, guid: 92d2509adac7bae41aeb20204ab54e97, type: 2}
-  - {fileID: 1791871354305930, guid: d37e4cca76fbb9b4fb95b67e53b05823, type: 2}
+  - {fileID: 1186634925889458, guid: 9b7aed5b5ac341d45b7aaed9e5a26c6b, type: 2}
+  - {fileID: 1178361528512212, guid: 0e118e1330c929e458af29c8f9efd4ba, type: 2}
+  - {fileID: 1553039152800794, guid: 9eb51e520310ce14db986a90197e3df0, type: 2}
+  - {fileID: 1364072926521128, guid: 5f2bacae9a2f34d49873d17d425faf88, type: 2}
+  - {fileID: 1429162675625048, guid: 4590e4e43b2e78e44829cbdb16c4d0a0, type: 2}
+  - {fileID: 1468690448314816, guid: fff03d57bd2d3fe4e968afee49d4a81a, type: 2}
+  - {fileID: 1791871354305930, guid: aa287edf5ab773642abcfd0742039bfa, type: 2}

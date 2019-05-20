@@ -5,6 +5,7 @@ namespace Controller
 	public class GameController : MonoBehaviour
 	{
 
+		
 		private int _lifes = 3;
 		// Use this for initialization
 		void Start () {
