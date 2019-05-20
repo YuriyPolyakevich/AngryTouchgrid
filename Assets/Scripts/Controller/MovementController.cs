@@ -5,8 +5,9 @@ public class MovementController : MonoBehaviour {
 	public float MovingSpeed;
 	public Vector3 lowestPosition = Vector3.zero;
 	public Vector3 highestPosition = Vector3.zero;
+	public float rotationSpeed = 0;
 	private Vector3 _targetPosition;
-
+	
 	private const float ToleranceValue = 0.00001f;
 	// Use this for initialization
 	private void Start () {
