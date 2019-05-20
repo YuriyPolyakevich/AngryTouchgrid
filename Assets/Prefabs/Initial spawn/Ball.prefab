@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 135800742128132090}
   - component: {fileID: 54798458470804300}
   - component: {fileID: 114328512258855692}
+  - component: {fileID: 114695346823168242}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Ball
@@ -38,8 +39,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1178361528512212}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.6663384, y: 3.2103693, z: 2.9926572}
+  m_LocalPosition: {x: 42.2, y: 14.8, z: 0.5}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -59,7 +60,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 89c43a2754a10a04a9b868376ca9d9e7, type: 2}
+  - {fileID: 2100000, guid: 913c4b3df6bf7824caa37118a9a912cf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -110,6 +111,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e59f4ef510a9cf40acc5d005c32316e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114695346823168242
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1178361528512212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!135 &135800742128132090
