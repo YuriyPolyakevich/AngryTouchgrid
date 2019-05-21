@@ -15,6 +15,7 @@ namespace Controller
 		// Use this for initialization
 		private void Start ()
 		{
+			_goalController = GameObject.FindGameObjectWithTag("GoalController").GetComponent<GoalController>();
 			_guiStyle = new GUIStyle {fontSize = 40};
 			_rigidBody = GetComponent<Rigidbody>();
 		}
@@ -24,7 +25,7 @@ namespace Controller
 			if (_isBallKicked && _rigidBody.velocity.x < ToleranceValue 
 			                  && _rigidBody.velocity.y < ToleranceValue
 			                  && _rigidBody.velocity.z < ToleranceValue
-			                  && !GoalController.IsGoal())
+			                  && !_goalController.IsGoal())
 			{
 				_noGoal = true;
 			}

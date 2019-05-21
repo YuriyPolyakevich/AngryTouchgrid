@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using Util;
 
@@ -7,7 +8,8 @@ namespace Controller
     public class GoalController : MonoBehaviour
     {
 
-        private static bool _isGoal = false;
+        private bool _isGoal = false;
+        private bool _isFinish = false;
         private GUIStyle _guiStyle;
 
         private void Start()
@@ -25,10 +27,17 @@ namespace Controller
 
         private void OnGUI()
         {
-            if (!_isGoal) return;
             var rect = new Rect(x: Screen.width / 2, y: Screen.height / 2, width: Screen.width / 6,
                 height: Screen.height / 4);
-            GUI.Label(rect, "GOAL!", _guiStyle);
+            if (_isGoal)
+            {
+                GUI.Label(rect, "GOAL!", _guiStyle);
+            }
+
+            if (_isFinish)
+            {
+                GUI.Label(rect, "Oh yeah zaebok!", _guiStyle);
+            }
         }
 
         private void GoToNextLevel()
@@ -36,16 +45,28 @@ namespace Controller
             StartCoroutine(NextLevel());
         }
 
-        private static IEnumerator NextLevel()
+        private IEnumerator NextLevel()
         {
             yield return new WaitForSeconds(2);
-            LevelUtil.LoadNextLevel();
+            try
+            {
+                LevelUtil.LoadNextLevel();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                _isGoal = false;
+                _isFinish = true;
+            }
+            
         }
 
-        public static bool IsGoal()
+        public bool IsGoal()
         {
             return _isGoal;
         }
+        
+        
     }
     
 }
