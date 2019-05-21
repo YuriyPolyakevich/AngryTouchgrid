@@ -28,7 +28,7 @@ namespace Util
         private static void GetCurrentLocationAndCurrentLevel(string currentScene)
         {
             var splittedSceneName = currentScene.Split('.');
-            if (splittedSceneName.Length < 3) throw new Exception("Wrong Scene Name");
+            if (splittedSceneName.Length < 3) throw new Exception("Wrong Scene Name: '" + currentScene + "'");
             CurrentLevel = int.Parse(splittedSceneName[splittedSceneName.Length - 1]);
             CurrentLocation = int.Parse(splittedSceneName[splittedSceneName.Length - 2]);
         }

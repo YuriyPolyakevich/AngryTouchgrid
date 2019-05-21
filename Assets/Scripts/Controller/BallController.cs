@@ -8,7 +8,6 @@ namespace Controller
 		
 		private Rigidbody _rigidBody;
 		private const float ToleranceValue = 0.00005f;
-		private bool _isBallKicked;
 		private bool _noGoal = false;
 		private GUIStyle _guiStyle;
 		private GoalController _goalController;
@@ -18,24 +17,14 @@ namespace Controller
 			_goalController = GameObject.FindGameObjectWithTag("GoalController").GetComponent<GoalController>();
 			_guiStyle = new GUIStyle {fontSize = 40};
 			_rigidBody = GetComponent<Rigidbody>();
+			_rigidBody.constraints = RigidbodyConstraints.FreezePositionZ;
 		}
 	
-		// Update is called once per frame
-		void Update () {
-			if (_isBallKicked && _rigidBody.velocity.x < ToleranceValue 
-			                  && _rigidBody.velocity.y < ToleranceValue
-			                  && _rigidBody.velocity.z < ToleranceValue
-			                  && !_goalController.IsGoal())
-			{
-				_noGoal = true;
-			}
-		}
-
 		private void OnCollisionEnter(Collision other)
 		{
 			if (other == null || !other.gameObject.transform.tag.Equals("Player")) return;
 			_rigidBody.useGravity = true;
-			_isBallKicked = true;
+			_goalController.IsBallKicked = true;
 		}
 		
 		private void OnGUI()
