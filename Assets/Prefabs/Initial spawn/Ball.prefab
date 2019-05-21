@@ -24,10 +24,9 @@ GameObject:
   - component: {fileID: 135800742128132090}
   - component: {fileID: 54798458470804300}
   - component: {fileID: 114328512258855692}
-  - component: {fileID: 114695346823168242}
   m_Layer: 0
   m_Name: Ball
-  m_TagString: Ball
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38,9 +37,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1178361528512212}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 42.2, y: 14.8, z: 0.5}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 31.44, y: 9.53, z: 0}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -60,7 +59,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 913c4b3df6bf7824caa37118a9a912cf, type: 2}
+  - {fileID: 2100000, guid: c1e2ce7f772a80e4fb2e5c49cd3a9b56, type: 3}
+  - {fileID: 2100002, guid: c1e2ce7f772a80e4fb2e5c49cd3a9b56, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,7 +86,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1178361528512212}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: c1e2ce7f772a80e4fb2e5c49cd3a9b56, type: 3}
 --- !u!54 &54798458470804300
 Rigidbody:
   m_ObjectHideFlags: 1
@@ -113,26 +113,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e59f4ef510a9cf40acc5d005c32316e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114695346823168242
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1178361528512212}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!135 &135800742128132090
 SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1178361528512212}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 92baf27ba596bb64cbecc75a41810214, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.45437917
-  m_Center: {x: 0, y: 0.0060303304, z: 0}
+  m_Radius: 1.0025067
+  m_Center: {x: 0, y: 0, z: 0}
