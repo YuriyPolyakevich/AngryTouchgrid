@@ -7,21 +7,31 @@ ModelImporter:
     100002: Cube
     100004: //RootNode
     100006: Light
+    100008: Field.1.1
     400000: Camera
     400002: Cube
     400004: //RootNode
     400006: Light
+    400008: Field.1.1
     2000000: Camera
     2100000: Material
     2100002: Field.1.1-texture
+    2100004: Field.1.1.texture
     2300000: Cube
     2300002: //RootNode
+    2300004: Field.1.1
     3300000: Cube
     3300002: //RootNode
+    3300004: Field.1.1
     4300000: Cube
     4300002: Field.1.1
     10800000: Light
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Field.1.1.texture
+    second: {fileID: 2100000, guid: b1d3e384ec11b9246a1f4c243545dd9f, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
