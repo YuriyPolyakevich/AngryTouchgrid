@@ -1,25 +1,35 @@
 fileFormatVersion: 2
-guid: 68dbc0ec6ab92d34f8f877d1eb622488
+guid: db5dd5f6b87147c41858003db559a965
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     100002: net
     100004: net-support
+    100006: Crossbars
+    100008: Net
     400000: //RootNode
     400002: net
     400004: net-support
+    400006: Crossbars
+    400008: Net
     2100000: Material
     2100002: No Name
     2300000: //RootNode
     2300002: net
     2300004: net-support
+    2300006: Crossbars
+    2300008: Net
     3300000: //RootNode
     3300002: net
     3300004: net-support
+    3300006: Crossbars
+    3300008: Net
     4300000: Goal
     4300002: net-support
     4300004: net
+    4300006: Crossbars
+    4300008: Net
   externalObjects: {}
   materials:
     importMaterials: 1
