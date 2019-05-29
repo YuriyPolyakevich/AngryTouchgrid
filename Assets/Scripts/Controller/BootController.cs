@@ -12,8 +12,11 @@ namespace Controller
         private const int Force = 2000;
         private Camera _camera;
         private GoalController _goalController;
+        public Vector3 InitialPosition { get; private set; }
+
         private void Start()
         {
+            InitialPosition = transform.position;
             _rigidBody = gameObject.GetComponent<Rigidbody>();
             _goalController = GameObject.FindGameObjectWithTag("GoalController").GetComponent<GoalController>();
             _rigidBody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX;

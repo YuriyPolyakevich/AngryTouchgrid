@@ -11,9 +11,11 @@ namespace Controller
 		private bool _noGoal = false;
 		private GUIStyle _guiStyle;
 		private GoalController _goalController;
+		public Vector3 InitialPosition { get; private set; }
 		// Use this for initialization
 		private void Start ()
 		{
+			InitialPosition = transform.position;
 			_goalController = GameObject.FindGameObjectWithTag("GoalController").GetComponent<GoalController>();
 			_guiStyle = new GUIStyle {fontSize = 40};
 			_rigidBody = GetComponent<Rigidbody>();

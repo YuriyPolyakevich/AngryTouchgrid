@@ -15,14 +15,15 @@ namespace Util
             CurrentLocation = 1;
         }
 
-        public static void LoadNextLevel()
+        public static bool LoadNextLevel()
         {
             var currentScene = SceneManager.GetActiveScene().name;
             GetCurrentLocationAndCurrentLevel(currentScene);
             CurrentLevel++;
             var sceneName = GetSceneName();
-            if(!Application.CanStreamedLevelBeLoaded(sceneName)) throw new Exception("End");
+            if(!Application.CanStreamedLevelBeLoaded(sceneName)) return false;
             SceneManager.LoadScene(sceneName);
+            return true;
         }
 
         private static void GetCurrentLocationAndCurrentLevel(string currentScene)

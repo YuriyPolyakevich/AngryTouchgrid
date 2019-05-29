@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
-using a;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Util;
 
 namespace Controller
@@ -22,9 +22,20 @@ namespace Controller
         private Rigidbody _playerRigidBody;
         private Rect _rect;
         private Vector3 _goalLinePosition;
+        private static int _lifes = 3;
+        private static int _previousSceneBuildIndex;
+
+        private bool _isLifeWasDecremented;
 
         private void Start()
         {
+            if (_previousSceneBuildIndex != SceneManager.GetActiveScene().buildIndex)
+            {
+                _lifes = 3;
+                _previousSceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
+            }
+
+            _isLifeWasDecremented = false;
             BootKickedTime = DateTime.MinValue;
             _rect = new Rect(x: Screen.width / 2, y: Screen.height / 2, width: Screen.width / 6,
                 height: Screen.height / 4);
@@ -38,27 +49,47 @@ namespace Controller
 
         private void Update()
         {
+            if (_isFinish) return;
             if (BootKickedTime != DateTime.MinValue && !IsBallKicked)
             {
                 var timeDifference = DateTime.Now - BootKickedTime;
-                var milliseconds = (int)timeDifference.TotalMilliseconds;
+                var milliseconds = (int) timeDifference.TotalMilliseconds;
                 if (milliseconds > 3000 && !IsBootBallDistanceDecreasing(_playerRigidBody.position))
                 {
-                    _noGoal = true;   
+                    _noGoal = true;
                 }
             }
-            if (!IsBallKicked || _isGoal) return;
-            if (!IsDistanceDecreasing(_ballRigidBody.transform.position))
+
+            if (IsBallKicked && !_isGoal)
             {
-                _noGoal = true;
+                if (!IsBallGoalDistanceDecreasing(_ballRigidBody.transform.position))
+                {
+                    _noGoal = true;
+                }
+                else if (_ballRigidBody.velocity.x < ToleranceVelocity
+                         && _ballRigidBody.velocity.y < ToleranceVelocity
+                         && _ballRigidBody.velocity.z < ToleranceVelocity
+                         && Vector3.Distance(_ballRigidBody.transform.position, _goalLinePosition) > ToleranceDistance)
+                {
+                    _noGoal = true;
+                }
             }
-            else if (_ballRigidBody.velocity.x < ToleranceVelocity
-                     && _ballRigidBody.velocity.y < ToleranceVelocity
-                     && _ballRigidBody.velocity.z < ToleranceVelocity
-                     && Vector3.Distance(_ballRigidBody.transform.position, _goalLinePosition) > ToleranceDistance)
-            {
-                _noGoal = true;
-            }
+
+            if (!_noGoal || _lifes <= 0 || _isLifeWasDecremented) return;
+            _lifes--;
+            _isLifeWasDecremented = true;
+            StartCoroutine(ReturnObjectsToStartPositions());
+        }
+
+        private void UpdateScene()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        private IEnumerator ReturnObjectsToStartPositions()
+        {
+            yield return new WaitForSeconds(2);
+            UpdateScene();
         }
 
         private bool IsBootBallDistanceDecreasing(Vector3 position)
@@ -69,7 +100,7 @@ namespace Controller
             return true;
         }
 
-        private bool IsDistanceDecreasing(Vector3 ballPosition)
+        private bool IsBallGoalDistanceDecreasing(Vector3 ballPosition)
         {
             var currentDistance = Vector3.Distance(ballPosition, _goalLinePosition);
             if (!(currentDistance - _previousBallDistance + ToleranceDistance < 0)) return false;
@@ -96,10 +127,13 @@ namespace Controller
                 GUI.Label(_rect, "Oh yeah zaebok!", _guiStyle);
             }
 
-            if (_noGoal)
+            if (_noGoal && _lifes == 0)
             {
                 GUI.Label(_rect, "Proeb", _guiStyle);
             }
+
+            if (!_isLifeWasDecremented) return;
+            GUI.Label(_rect, "Remainig " + _lifes + " lifes", _guiStyle);
         }
 
         private void GoToNextLevel()
@@ -110,20 +144,10 @@ namespace Controller
         private IEnumerator NextLevel()
         {
             yield return new WaitForSeconds(2);
-            try
-            {
-                LevelUtil.LoadNextLevel();
-            }
-            catch (Exception e)
-            {
-                if (GlobalConfiguration.IsDevMode())
-                {
-                    Debug.unityLogger.Log(e);
-                }
-
-                _isGoal = false;
-                _isFinish = true;
-            }
+            if (LevelUtil.LoadNextLevel()) yield break;
+            _isLifeWasDecremented = false;
+            _isGoal = false;
+            _isFinish = true;
         }
     }
 }
