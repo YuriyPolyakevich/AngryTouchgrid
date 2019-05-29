@@ -13,8 +13,9 @@ namespace Controller
         private bool _noGoal = false;
         public bool IsBallKicked { private get; set; }
         public DateTime BootKickedTime { get; set; }
+        public DateTime BallKickedTime { get; set; }
         private const float ToleranceDistance = 0.9f;
-        private const float ToleranceVelocity = 0.0005f;
+        private const float ToleranceVelocity = 0.005f;
         private float _previousBallDistance;
         private float _previousBootDistance;
         private GUIStyle _guiStyle;
@@ -24,7 +25,7 @@ namespace Controller
         private Vector3 _goalLinePosition;
         private static int _lifes = 3;
         private static int _previousSceneBuildIndex;
-
+    
         private bool _isLifeWasDecremented;
 
         private void Start()
@@ -37,9 +38,10 @@ namespace Controller
 
             _isLifeWasDecremented = false;
             BootKickedTime = DateTime.MinValue;
+            BallKickedTime = DateTime.MinValue;
             _rect = new Rect(x: Screen.width / 2, y: Screen.height / 2, width: Screen.width / 6,
                 height: Screen.height / 4);
-            _guiStyle = new GUIStyle {fontSize = 40};
+            _guiStyle = new GUIStyle {fontSize = 40, fontStyle = FontStyle.BoldAndItalic};
             _ballRigidBody = GameObject.FindGameObjectWithTag("Ball").GetComponent<Rigidbody>();
             _playerRigidBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
             _goalLinePosition = transform.position;
@@ -55,13 +57,15 @@ namespace Controller
             {
                 var timeDifference = DateTime.Now - BootKickedTime;
                 var milliseconds = (int) timeDifference.TotalMilliseconds;
-                if (milliseconds > 3000 && !IsBootBallDistanceDecreasing(_playerRigidBody.position))
+                if (milliseconds > 5000 && !IsBootBallDistanceDecreasing(_playerRigidBody.position))
                 {
                     _noGoal = true;
                 }
             }
 
-            if (IsBallKicked && !_isGoal)
+            var ballTimeDifference = DateTime.Now - BallKickedTime;
+            var ballMilliseconds = ballTimeDifference.Milliseconds;
+            if (IsBallKicked && !_isGoal && ballMilliseconds > 3000)
             {
                 if (!IsBallGoalDistanceDecreasing(_ballRigidBody.transform.position))
                 {
@@ -77,7 +81,6 @@ namespace Controller
             }
 
             if (!_noGoal || _lifes <= 0 || _isLifeWasDecremented) return;
-            Debug.unityLogger.Log(_noGoal + " : " + _isLifeWasDecremented+ " : " +_lifes);
             _lifes--;
             _isLifeWasDecremented = true;
             StartCoroutine(ReturnObjectsToStartPositions());

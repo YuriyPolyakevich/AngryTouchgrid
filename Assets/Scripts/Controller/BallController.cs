@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Controller
 {
@@ -27,6 +28,7 @@ namespace Controller
 			if (other == null || !other.gameObject.transform.tag.Equals("Player")) return;
 			_rigidBody.useGravity = true;
 			_goalController.IsBallKicked = true;
+			_goalController.BallKickedTime = DateTime.Now;
 		}
 		
 		private void OnGUI()

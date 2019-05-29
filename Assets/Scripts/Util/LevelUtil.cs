@@ -1,4 +1,5 @@
 using System;
+using Configuration;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -29,14 +30,15 @@ namespace Util
         private static void GetCurrentLocationAndCurrentLevel(string currentScene)
         {
             var splittedSceneName = currentScene.Split('.');
-            if (splittedSceneName.Length < 3) throw new Exception("Wrong Scene Name: '" + currentScene + "'");
-            CurrentLevel = int.Parse(splittedSceneName[splittedSceneName.Length - 1]);
-            CurrentLocation = int.Parse(splittedSceneName[splittedSceneName.Length - 2]);
+            if (splittedSceneName.Length < 4) throw new Exception("Wrong Scene Name: '" + currentScene + "'");
+            CurrentLevel = int.Parse(splittedSceneName[splittedSceneName.Length - 2]);
+            CurrentLocation = int.Parse(splittedSceneName[splittedSceneName.Length - 3]);
         }
 
         private static string GetSceneName()
         {
-            return "level." + CurrentLocation + "." + CurrentLevel;
+            var scenePostfix = GlobalConfiguration.IsDevMode() ? "dev" : "prod";
+            return "level." + CurrentLocation + "." + CurrentLevel + "." + scenePostfix;
         }
     }
 }

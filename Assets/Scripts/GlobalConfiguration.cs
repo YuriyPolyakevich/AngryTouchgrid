@@ -1,6 +1,6 @@
-namespace a
+namespace Configuration
 {
-    public class GlobalConfiguration
+    public static class GlobalConfiguration
     {
         private static readonly bool _isDevMode = true;
         
