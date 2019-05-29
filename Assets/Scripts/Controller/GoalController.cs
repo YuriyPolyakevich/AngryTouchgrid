@@ -13,7 +13,7 @@ namespace Controller
         private bool _noGoal = false;
         public bool IsBallKicked { private get; set; }
         public DateTime BootKickedTime { get; set; }
-        private const float ToleranceDistance = 0.0009f;
+        private const float ToleranceDistance = 0.9f;
         private const float ToleranceVelocity = 0.0005f;
         private float _previousBallDistance;
         private float _previousBootDistance;
@@ -50,6 +50,7 @@ namespace Controller
         private void Update()
         {
             if (_isFinish) return;
+            if (_isGoal) return;
             if (BootKickedTime != DateTime.MinValue && !IsBallKicked)
             {
                 var timeDifference = DateTime.Now - BootKickedTime;
@@ -76,6 +77,7 @@ namespace Controller
             }
 
             if (!_noGoal || _lifes <= 0 || _isLifeWasDecremented) return;
+            Debug.unityLogger.Log(_noGoal + " : " + _isLifeWasDecremented+ " : " +_lifes);
             _lifes--;
             _isLifeWasDecremented = true;
             StartCoroutine(ReturnObjectsToStartPositions());
