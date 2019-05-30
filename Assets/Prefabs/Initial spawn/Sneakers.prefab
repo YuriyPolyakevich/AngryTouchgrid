@@ -112,6 +112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d42ac80324674741b9b58fa9fabf20e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trajectoryDotPrefab: {fileID: 1835448398654350, guid: 99cc3b3854894e842a75be886ccc13be,
+    type: 2}
 --- !u!136 &136058255502898756
 CapsuleCollider:
   m_ObjectHideFlags: 1
