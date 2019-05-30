@@ -19,10 +19,11 @@ namespace Controller
         private Camera _camera;
         private GoalController _goalController;
         private Vector3 InitialPosition { get; set; }
-        private const int NumOfDotsToShow = 20;
+        private const int NumOfDotsToShow = 10;
         private readonly List<GameObject> _dotPrefabs = new List<GameObject>();
         private readonly Vector3 _gravityVector = new Vector3(0f, -100f, 0);
         private bool _isBootMoving = false;
+        private Vector3 _forceVector = Vector3.zero;
 
         private void Start()
         {
@@ -42,7 +43,6 @@ namespace Controller
                 if (!_isDragging)
                 {
                     StartDraggingConfiguration(touch);
-                    InstantiateDots();
                 }
                 else
                 {
@@ -58,6 +58,14 @@ namespace Controller
             }
         }
 
+        private void StartDraggingConfiguration(Touch touch)
+        {
+            if (!IsHitted(touch)) return;
+            _isDragging = true;
+            _firstPosition = touch.position;
+            InstantiateDots();
+        }
+
         private void InstantiateDots()
         {
             for (var i = 0; i < NumOfDotsToShow; i++)
@@ -67,7 +75,8 @@ namespace Controller
             }
         }
 
-        public void FixedUpdate() {
+        public void FixedUpdate()
+        {
             if (_isBootMoving)
             {
                 _rigidBody.AddForce(_gravityVector, ForceMode.Acceleration);
@@ -83,19 +92,16 @@ namespace Controller
 
         private void MoveObject()
         {
-            var velocityVector = CalculateForce();
-            var velocitySpeed =
-                Mathf.Sqrt(velocityVector.x * velocityVector.x + velocityVector.y * velocityVector.y);
-            _isBootMoving = true; 
-            _rigidBody.AddForce(CalculateForce(), ForceMode.Impulse);
-//            _rigidBody.velocity = CalculateVelocity();
+            if (_forceVector == Vector3.zero) return;
+            _isBootMoving = true;
+            _rigidBody.AddForce(_forceVector, ForceMode.Impulse);
             _goalController.BootKickedTime = DateTime.Now;
         }
 
         private Vector3 CalculateForce()
         {
-            var calculateVelocity = -(_lastPosition - _firstPosition) * Force;
-            return calculateVelocity;
+            return -(_lastPosition - _firstPosition) * Force;
+            ;
         }
 
         private void StopDraggingConfiguration(Touch touch)
@@ -103,7 +109,7 @@ namespace Controller
             _lastPosition = touch.position;
             for (var i = 0; i < _dotPrefabs.Count; i++)
             {
-                _dotPrefabs[i].transform.position = CalculatePosition( DotTimeStep * i);
+                _dotPrefabs[i].transform.position = CalculatePosition(DotTimeStep * i);
             }
         }
 
@@ -115,22 +121,15 @@ namespace Controller
             }
         }
 
-        private void StartDraggingConfiguration(Touch touch)
-        {
-            if (!IsHitted(touch)) return;
-            _isDragging = true;
-            _firstPosition = touch.position;
-        }
 
         private Vector3 CalculatePosition(float elapsedTime)
         {
-//            var calculatePosition = _gravityVector * elapsedTime * elapsedTime * 0.5f +
-//                                    CalculateVelocityVector() * elapsedTime + InitialPosition;
             var mass = _rigidBody.mass;
+            _forceVector = CalculateForce();
             var calculatePosition = InitialPosition +
-                                    (CalculateForce() / mass) * elapsedTime
-                                    + _gravityVector * elapsedTime * elapsedTime / 2; 
-                                    
+                                    (_forceVector / mass) * elapsedTime
+                                    + _gravityVector * elapsedTime * elapsedTime / 2;
+
             return calculatePosition;
         }
     }
