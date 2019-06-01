@@ -39,6 +39,8 @@ ModelImporter:
     400032: slingshot
     2000000: Camera
     2100000: No Name
+    2100002: column
+    2100004: shoelaces
     2300000: column
     2300002: Target
     3300000: column
@@ -50,7 +52,17 @@ ModelImporter:
     10800000: Light
     13700000: shoelaces
     2186277476908879412: ImportLogs
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: column
+    second: {fileID: 2100000, guid: e4468ed6284d06b4e964061080abfda0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: shoelaces
+    second: {fileID: 2100000, guid: 0d1b896e7b706654fa431db85a08c079, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
