@@ -293,6 +293,10 @@ Prefab:
       propertyPath: m_Name
       value: Goals.1prod
       objectReference: {fileID: 0}
+    - target: {fileID: 1912788031958204, guid: 21adba93de02cf24596a211da2417802, type: 2}
+      propertyPath: m_TagString
+      value: GoalController
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 65962205888657106, guid: 21adba93de02cf24596a211da2417802, type: 2}
     - {fileID: 65574591072108380, guid: 21adba93de02cf24596a211da2417802, type: 2}
@@ -562,6 +566,10 @@ Prefab:
         type: 2}
       propertyPath: m_Radius
       value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178361528512212, guid: 0e118e1330c929e458af29c8f9efd4ba, type: 2}
+      propertyPath: m_TagString
+      value: Ball
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0e118e1330c929e458af29c8f9efd4ba, type: 2}
