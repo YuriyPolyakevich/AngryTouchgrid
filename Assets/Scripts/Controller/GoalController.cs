@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Configuration;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Util;
@@ -25,28 +26,50 @@ namespace Controller
         private Vector3 _goalLinePosition;
         private static int _lifes = 3;
         private static int _previousSceneBuildIndex;
-    
+
         private bool _isLifeWasDecremented;
 
         private void Start()
         {
-            if (_previousSceneBuildIndex != SceneManager.GetActiveScene().buildIndex)
+            if (!GlobalConfiguration.IsDevMode())
+            {
+                if (_previousSceneBuildIndex != SceneManager.GetActiveScene().buildIndex)
+                {
+                    _lifes = 3;
+                    _previousSceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
+                }
+            }
+            else
             {
                 _lifes = 3;
-                _previousSceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
             }
 
             _isLifeWasDecremented = false;
-            BootKickedTime = DateTime.MinValue;
-            BallKickedTime = DateTime.MinValue;
+            SetInitialKickedTime();
             _rect = new Rect(x: Screen.width / 2, y: Screen.height / 2, width: Screen.width / 6,
                 height: Screen.height / 4);
             _guiStyle = new GUIStyle {fontSize = 40, fontStyle = FontStyle.BoldAndItalic};
-            _ballRigidBody = GameObject.FindGameObjectWithTag("Ball").GetComponent<Rigidbody>();
-            _playerRigidBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
+            SetRigidBody();
             _goalLinePosition = transform.position;
+            SetInitialDistance();
+        }
+
+        private void SetInitialKickedTime()
+        {
+            BootKickedTime = DateTime.MinValue;
+            BallKickedTime = DateTime.MinValue;
+        }
+
+        private void SetInitialDistance()
+        {
             _previousBallDistance = Vector3.Distance(_ballRigidBody.position, _goalLinePosition);
             _previousBootDistance = Vector3.Distance(_ballRigidBody.position, _playerRigidBody.position);
+        }
+        
+        private void SetRigidBody()
+        {
+            _ballRigidBody = GameObject.FindGameObjectWithTag("Ball").GetComponent<Rigidbody>();
+            _playerRigidBody = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
         }
 
         private void Update()
