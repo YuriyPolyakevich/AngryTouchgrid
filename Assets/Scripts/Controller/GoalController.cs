@@ -13,7 +13,7 @@ namespace Controller
         private bool _noGoal = false;
         public bool IsBallKicked { private get; set; }
         public DateTime BootKickedTime { get; set; }
-        public DateTime BallKickedTime { get; set; }
+        public DateTime BallKickedTime { private get; set; }
         private const float ToleranceDistance = 0.9f;
         private const float ToleranceVelocity = 0.005f;
         private float _previousBallDistance;
