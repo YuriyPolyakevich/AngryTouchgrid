@@ -22,7 +22,13 @@ namespace Util
             GetCurrentLocationAndCurrentLevel(currentScene);
             CurrentLevel++;
             var sceneName = GetSceneName();
-            if(!Application.CanStreamedLevelBeLoaded(sceneName)) return false;
+
+            if (GlobalConfiguration.IsDevMode())
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                return true;
+            }
+            if (!Application.CanStreamedLevelBeLoaded(sceneName) && !GlobalConfiguration.IsDevMode()) return false;
             SceneManager.LoadScene(sceneName);
             return true;
         }
