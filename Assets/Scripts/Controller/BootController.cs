@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Controller
 {
@@ -7,19 +8,24 @@ namespace Controller
         private bool _isDragging = false;
         private Vector3 _firstPosition = Vector3.zero;
         private Vector3 _lastPosition = Vector3.zero;
-        private Rigidbody _rigidbody = null;
+        private Rigidbody _rigidBody = null;
         private const int Force = 2000;
         private Camera _camera;
+        private GoalController _goalController;
+        public Vector3 InitialPosition { get; private set; }
 
         private void Start()
         {
-            _rigidbody = gameObject.GetComponent<Rigidbody>();
-            _rigidbody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX;
+            InitialPosition = transform.position;
+            _rigidBody = gameObject.GetComponent<Rigidbody>();
+            _goalController = GameObject.FindGameObjectWithTag("GoalController").GetComponent<GoalController>();
+            _rigidBody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX;
             _camera = Camera.main;
         }
 
         private void Update()
         {
+            if (_goalController.BootKickedTime != DateTime.MinValue) return;
             if (Input.touches.Length == 1)
             {
                 var touch = Input.touches[0];
@@ -50,7 +56,8 @@ namespace Controller
         private void MoveObject()
         {
             var moveDirection = -(_lastPosition - _firstPosition);
-            _rigidbody.AddForce(moveDirection * Force, ForceMode.Force);
+            _rigidBody.AddForce(moveDirection * Force, ForceMode.Force);
+            _goalController.BootKickedTime = DateTime.Now;
         }
 
         private void StopDraggingConfiguration(Touch touch)

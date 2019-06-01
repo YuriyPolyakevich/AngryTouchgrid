@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Controller
 {
@@ -7,30 +8,35 @@ namespace Controller
 
 		
 		private Rigidbody _rigidBody;
-		private const float ToleranceValue = 0.005f;
-		private bool _isBallKicked;
-
+		private const float ToleranceValue = 0.00005f;
+		private bool _noGoal = false;
+		private GUIStyle _guiStyle;
+		private GoalController _goalController;
+		public Vector3 InitialPosition { get; private set; }
 		// Use this for initialization
 		private void Start ()
 		{
+			InitialPosition = transform.position;
+			_goalController = GameObject.FindGameObjectWithTag("GoalController").GetComponent<GoalController>();
+			_guiStyle = new GUIStyle {fontSize = 40};
 			_rigidBody = GetComponent<Rigidbody>();
+			_rigidBody.constraints = RigidbodyConstraints.FreezePositionZ;
 		}
 	
-		// Update is called once per frame
-		void Update () {
-			if (_isBallKicked && _rigidBody.velocity.x < ToleranceValue 
-			                  && _rigidBody.velocity.y < ToleranceValue
-			                  && _rigidBody.velocity.z < ToleranceValue)
-			{
-				Debug.unityLogger.Log("You lost");
-			}
-		}
-
 		private void OnCollisionEnter(Collision other)
 		{
 			if (other == null || !other.gameObject.transform.tag.Equals("Player")) return;
 			_rigidBody.useGravity = true;
-			_isBallKicked = true;
+			_goalController.IsBallKicked = true;
+			_goalController.BallKickedTime = DateTime.Now;
+		}
+		
+		private void OnGUI()
+		{
+			if (!_noGoal) return;
+			var rect = new Rect(x: Screen.width / 2, y: Screen.height / 2, width: Screen.width / 6,
+				height: Screen.height / 4);
+			GUI.Label(rect, "Хуйня, ты проебал", _guiStyle);
 		}
 	}
 }

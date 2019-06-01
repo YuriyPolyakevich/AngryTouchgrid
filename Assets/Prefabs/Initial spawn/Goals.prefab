@@ -61,9 +61,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4525783690660742}
   - component: {fileID: 65943084259383262}
+  - component: {fileID: 114495004243352348}
   m_Layer: 0
   m_Name: GoalTrigger
-  m_TagString: Untagged
+  m_TagString: GoalController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -235,6 +236,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.6146992, y: 0.8220747, z: 0.21960779}
   m_Center: {x: 1.2223758, y: 0.40439883, z: 3.653638}
+--- !u!114 &114495004243352348
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1865316213564716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51ccb72e98efd4149a95a8f34efc8341, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!136 &136273299622876182
 CapsuleCollider:
   m_ObjectHideFlags: 1

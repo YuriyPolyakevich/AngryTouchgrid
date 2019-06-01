@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465785, g: 0.49641448, b: 0.5748156, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465785, g: 0.4964143, b: 0.57481533, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -433,7 +433,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4121317174340616, guid: 0e118e1330c929e458af29c8f9efd4ba, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 5.55
+      value: 1.6
       objectReference: {fileID: 0}
     - target: {fileID: 4121317174340616, guid: 0e118e1330c929e458af29c8f9efd4ba, type: 2}
       propertyPath: m_LocalPosition.z
@@ -463,6 +463,10 @@ Prefab:
         type: 2}
       propertyPath: m_UseGravity
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178361528512212, guid: 0e118e1330c929e458af29c8f9efd4ba, type: 2}
+      propertyPath: m_TagString
+      value: Ball
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0e118e1330c929e458af29c8f9efd4ba, type: 2}

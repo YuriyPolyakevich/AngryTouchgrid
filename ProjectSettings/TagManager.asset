@@ -7,6 +7,8 @@ TagManager:
   - MainLight
   - Ball
   - BallSpawner
+  - LevelController
+  - GoalController
   layers:
   - Default
   - TransparentFX
