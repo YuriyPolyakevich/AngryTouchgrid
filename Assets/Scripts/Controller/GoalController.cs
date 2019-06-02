@@ -24,7 +24,7 @@ namespace Controller
         private Rigidbody _playerRigidBody;
         private Rect _rect;
         private Vector3 _goalLinePosition;
-        private static int _lifes = 3;
+        private static int _lives = 3;
         private static int _previousSceneBuildIndex;
 
         private bool _isLifeWasDecremented;
@@ -35,13 +35,13 @@ namespace Controller
             {
                 if (_previousSceneBuildIndex != SceneManager.GetActiveScene().buildIndex)
                 {
-                    _lifes = 3;
+                    _lives = 3;
                     _previousSceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
                 }
             }
             else
             {
-                _lifes = 3;
+                _lives = 3;
             }
 
             _isLifeWasDecremented = false;
@@ -103,8 +103,8 @@ namespace Controller
                 }
             }
 
-            if (!_noGoal || _lifes <= 0 || _isLifeWasDecremented) return;
-            _lifes--;
+            if (!_noGoal || _lives <= 0 || _isLifeWasDecremented) return;
+            _lives--;
             _isLifeWasDecremented = true;
             StartCoroutine(ReturnObjectsToStartPositions());
         }
@@ -155,13 +155,13 @@ namespace Controller
                 GUI.Label(_rect, "Oh yeah zaebok!", _guiStyle);
             }
 
-            if (_noGoal && _lifes == 0)
+            if (_noGoal && _lives == 0)
             {
                 GUI.Label(_rect, "Proeb", _guiStyle);
             }
 
             if (!_isLifeWasDecremented) return;
-            GUI.Label(_rect, "Remainig " + _lifes + " lifes", _guiStyle);
+            GUI.Label(_rect, "Remainig " + _lives + " lifes", _guiStyle);
         }
 
         private void GoToNextLevel()

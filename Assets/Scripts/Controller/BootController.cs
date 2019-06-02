@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Util;
 
 namespace Controller
 {
@@ -9,20 +10,15 @@ namespace Controller
     {
         [FormerlySerializedAs("_trajectoryDotPrefab")]
         public GameObject trajectoryDotPrefab;
-
-        private const float DotTimeStep = 0.05f;
+        public bool IsBootMoving { private set; get; }
+        private Vector3 InitialPosition;
         private bool _isDragging = false;
         private Vector3 _firstPosition = Vector3.zero;
         private Vector3 _lastPosition = Vector3.zero;
         private Rigidbody _rigidBody = null;
-        private const int Force = 70;
         private Camera _camera;
         private GoalController _goalController;
-        private Vector3 InitialPosition { get; set; }
-        private const int NumOfDotsToShow = 10;
         private readonly List<GameObject> _dotPrefabs = new List<GameObject>();
-        private readonly Vector3 _gravityVector = new Vector3(0f, -100f, 0);
-        private bool _isBootMoving = false;
         private Vector3 _forceVector = Vector3.zero;
 
         private void Start()
@@ -46,16 +42,29 @@ namespace Controller
                 }
                 else
                 {
-                    StopDraggingConfiguration(touch);
+                    DraggingConfiguration(touch);
                 }
             }
             else
             {
                 if (!_isDragging) return;
-                ClearDots();
-                MoveObject();
+                
+                if (CorrectDirection())
+                {
+                    MoveObject();
+                    ClearDots();
+                }
+                else
+                {
+                    transform.position = InitialPosition;
+                }
                 _isDragging = false;
             }
+        }
+
+        private bool CorrectDirection()
+        {
+            return CalculateForce().x > InitialPosition.x;
         }
 
         private void StartDraggingConfiguration(Touch touch)
@@ -68,7 +77,7 @@ namespace Controller
 
         private void InstantiateDots()
         {
-            for (var i = 0; i < NumOfDotsToShow; i++)
+            for (var i = 0; i < BootConstantsUtil.NumOfDotsToShow; i++)
             {
                 var trajectoryDot = Instantiate(trajectoryDotPrefab);
                 _dotPrefabs.Add(trajectoryDot);
@@ -77,9 +86,9 @@ namespace Controller
 
         public void FixedUpdate()
         {
-            if (_isBootMoving)
+            if (IsBootMoving)
             {
-                _rigidBody.AddForce(_gravityVector, ForceMode.Acceleration);
+                _rigidBody.AddForce(BootConstantsUtil.GravityVector, ForceMode.Acceleration);
             }
         }
 
@@ -93,23 +102,33 @@ namespace Controller
         private void MoveObject()
         {
             if (_forceVector == Vector3.zero) return;
-            _isBootMoving = true;
+            IsBootMoving = true;
             _rigidBody.AddForce(_forceVector, ForceMode.Impulse);
             _goalController.BootKickedTime = DateTime.Now;
         }
 
         private Vector3 CalculateForce()
         {
-            return -(_lastPosition - _firstPosition) * Force;
-            ;
+            return -(_lastPosition - _firstPosition) * BootConstantsUtil.Force;
         }
 
-        private void StopDraggingConfiguration(Touch touch)
+        private void DraggingConfiguration(Touch touch)
         {
             _lastPosition = touch.position;
-            for (var i = 0; i < _dotPrefabs.Count; i++)
+            var screenPointToWorld = _camera.ScreenToWorldPoint(_lastPosition);
+            transform.position = new Vector3(screenPointToWorld.x, screenPointToWorld.y, BootConstantsUtil.ZFreezePosition);
+            if (CorrectDirection())
             {
-                _dotPrefabs[i].transform.position = CalculatePosition(DotTimeStep * i);
+                if (_dotPrefabs.Count == 0)
+                    InstantiateDots();
+                for (var i = 0; i < _dotPrefabs.Count; i++)
+                {
+                    _dotPrefabs[i].transform.position = CalculatePosition(BootConstantsUtil.DotTimeStep * (i + 1));
+                }   
+            }
+            else
+            {
+                ClearDots();
             }
         }
 
@@ -119,6 +138,7 @@ namespace Controller
             {
                 Destroy(i);
             }
+            _dotPrefabs.Clear();
         }
 
 
@@ -126,9 +146,9 @@ namespace Controller
         {
             var mass = _rigidBody.mass;
             _forceVector = CalculateForce();
-            var calculatePosition = InitialPosition +
+            var calculatePosition = transform.position +
                                     (_forceVector / mass) * elapsedTime
-                                    + _gravityVector * elapsedTime * elapsedTime / 2;
+                                    + BootConstantsUtil.GravityVector * elapsedTime * elapsedTime / 2;
 
             return calculatePosition;
         }
