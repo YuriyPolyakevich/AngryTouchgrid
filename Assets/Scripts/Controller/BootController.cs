@@ -115,8 +115,7 @@ namespace Controller
         private void DraggingConfiguration(Touch touch)
         {
             _lastPosition = touch.position;
-            var screenPointToWorld = _camera.ScreenToWorldPoint(_lastPosition);
-            transform.position = new Vector3(screenPointToWorld.x, screenPointToWorld.y, BootConstantsUtil.ZFreezePosition);
+            ChangeBootPosition();
             if (CorrectDirection())
             {
                 if (_dotPrefabs.Count == 0)
@@ -130,6 +129,31 @@ namespace Controller
             {
                 ClearDots();
             }
+        }
+
+        private void ChangeBootPosition()
+        {
+            var screenPointToWorld = _camera.ScreenToWorldPoint(_lastPosition);
+            var xPosition = screenPointToWorld.x;
+            var yPosition = screenPointToWorld.y;
+            if (xPosition > InitialPosition.x + BootConstantsUtil.XDistanceConstraint)
+            {
+                xPosition = InitialPosition.x + BootConstantsUtil.XDistanceConstraint;
+            }
+            else if (xPosition < InitialPosition.x - BootConstantsUtil.XDistanceConstraint)
+            {
+                xPosition = InitialPosition.x - BootConstantsUtil.XDistanceConstraint;
+            }
+
+            if (yPosition > InitialPosition.y + BootConstantsUtil.YUpDistanceConstraint)
+            {
+                yPosition = InitialPosition.y + BootConstantsUtil.YUpDistanceConstraint;
+            }
+            else if (yPosition < InitialPosition.y - BootConstantsUtil.YDownDistanceConstraint)
+            {
+                yPosition = InitialPosition.y - BootConstantsUtil.YDownDistanceConstraint;
+            }
+            transform.position = new Vector3(xPosition, yPosition, BootConstantsUtil.ZFreezePosition);
         }
 
         private void ClearDots()
