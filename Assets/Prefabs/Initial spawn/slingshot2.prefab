@@ -99,7 +99,6 @@ GameObject:
   - component: {fileID: 4368507974548896}
   - component: {fileID: 54037310361583408}
   - component: {fileID: 145922948828990004}
-  - component: {fileID: 138257430459833816}
   m_Layer: 0
   m_Name: Main
   m_TagString: Untagged
@@ -294,7 +293,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: a2360f57067a7ae4ca8c3206a4df9529, type: 3}
+  - {fileID: 2100000, guid: e4468ed6284d06b4e964061080abfda0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -332,7 +331,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -366,7 +365,7 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: a2360f57067a7ae4ca8c3206a4df9529, type: 3}
+  - {fileID: 2100000, guid: 0d1b896e7b706654fa431db85a08c079, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -401,19 +400,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00000024103065, y: 0.024999995, z: 9.094947e-13}
     m_Extent: {x: 0.0000500015, y: 0.02500001, z: 0.000010000003}
   m_DirtyAABB: 0
---- !u!138 &138257430459833816
-FixedJoint:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1670017843345914}
-  m_ConnectedBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_EnableCollision: 0
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
 --- !u!145 &145922948828990004
 SpringJoint:
   m_ObjectHideFlags: 1
@@ -428,7 +414,7 @@ SpringJoint:
   m_Spring: 300
   m_Damper: 0.2
   m_MinDistance: 0
-  m_MaxDistance: 2
+  m_MaxDistance: 0
   m_Tolerance: 0.025
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
