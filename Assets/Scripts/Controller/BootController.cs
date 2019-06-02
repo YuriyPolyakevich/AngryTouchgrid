@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Util;
 
 namespace Controller
 {
     public class BootController : MonoBehaviour
     {
-        [FormerlySerializedAs("_trajectoryDotPrefab")]
         public GameObject trajectoryDotPrefab;
         public bool IsBootMoving { private set; get; }
         private Vector3 InitialPosition;

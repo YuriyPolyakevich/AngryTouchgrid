@@ -8,16 +8,11 @@ namespace Controller
 
 		
 		private Rigidbody _rigidBody;
-		private const float ToleranceValue = 0.00005f;
-		private bool _noGoal = false;
-		private GUIStyle _guiStyle;
 		private GoalController _goalController;
 
-		// Use this for initialization
 		private void Start ()
 		{
 			_goalController = GameObject.FindGameObjectWithTag("GoalController").GetComponent<GoalController>();
-			_guiStyle = new GUIStyle {fontSize = 40};
 			_rigidBody = GetComponent<Rigidbody>();
 			_rigidBody.constraints = RigidbodyConstraints.FreezePositionZ;
 		}
@@ -30,12 +25,5 @@ namespace Controller
 			_goalController.BallKickedTime = DateTime.Now;
 		}
 		
-		private void OnGUI()
-		{
-			if (!_noGoal) return;
-			var rect = new Rect(x: Screen.width / 2, y: Screen.height / 2, width: Screen.width / 6,
-				height: Screen.height / 4);
-			GUI.Label(rect, "Хуйня, ты проебал", _guiStyle);
-		}
 	}
 }
