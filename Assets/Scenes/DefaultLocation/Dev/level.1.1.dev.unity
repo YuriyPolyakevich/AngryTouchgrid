@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465785, g: 0.49641448, b: 0.5748156, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465785, g: 0.4964143, b: 0.57481533, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -152,6 +152,12 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114486727044951372, guid: fff03d57bd2d3fe4e968afee49d4a81a,
+        type: 2}
+      propertyPath: trajectoryDotPrefab
+      value: 
+      objectReference: {fileID: 1835448398654350, guid: 99cc3b3854894e842a75be886ccc13be,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fff03d57bd2d3fe4e968afee49d4a81a, type: 2}
   m_IsPrefabParent: 0
@@ -331,6 +337,22 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: aa287edf5ab773642abcfd0742039bfa, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1559312953 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1670017843345914, guid: f2c8ac101ec2bb74480d87c4858173a8,
+    type: 2}
+  m_PrefabInternal: {fileID: 1771497857}
+--- !u!114 &1559312955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1559312953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 686e131b25688e1429ba81f22df12491, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1687499022
 Prefab:
   m_ObjectHideFlags: 0
@@ -410,6 +432,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4389341623350178, guid: f2c8ac101ec2bb74480d87c4858173a8, type: 2}
       propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23303810410442384, guid: f2c8ac101ec2bb74480d87c4858173a8,
+        type: 2}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

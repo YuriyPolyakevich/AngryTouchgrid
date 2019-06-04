@@ -9,7 +9,7 @@ namespace Controller
     {
         public GameObject trajectoryDotPrefab;
         public bool IsBootMoving { private set; get; }
-        private Vector3 InitialPosition;
+        private Vector3 _initialPosition;
         private bool _isDragging = false;
         private Vector3 _firstPosition = Vector3.zero;
         private Vector3 _lastPosition = Vector3.zero;
@@ -21,7 +21,7 @@ namespace Controller
 
         private void Start()
         {
-            InitialPosition = transform.position;
+            _initialPosition = transform.position;
             _rigidBody = gameObject.GetComponent<Rigidbody>();
             _goalController = GameObject.FindGameObjectWithTag("GoalController").GetComponent<GoalController>();
             _rigidBody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX;
@@ -54,7 +54,7 @@ namespace Controller
                 }
                 else
                 {
-                    transform.position = InitialPosition;
+                    transform.position = _initialPosition;
                 }
                 _isDragging = false;
             }
@@ -62,12 +62,12 @@ namespace Controller
 
         private bool CorrectDirection()
         {
-            return CalculateForce().x > InitialPosition.x;
+            return CalculateForce().x > _initialPosition.x;
         }
 
         private void StartDraggingConfiguration(Touch touch)
         {
-            if (!IsHitted(touch)) return;
+            if (!IsHit(touch)) return;
             _isDragging = true;
             _firstPosition = touch.position;
             InstantiateDots();
@@ -90,11 +90,11 @@ namespace Controller
             }
         }
 
-        private bool IsHitted(Touch touch)
+        private bool IsHit(Touch touch)
         {
-            RaycastHit raycastHit;
+            RaycastHit rayCastHit;
             var ray = _camera.ScreenPointToRay(touch.position);
-            return Physics.Raycast(ray, out raycastHit) && raycastHit.transform.gameObject.tag.Equals("Player");
+            return Physics.Raycast(ray, out rayCastHit) && rayCastHit.transform.gameObject.tag.Equals("Player");
         }
 
         private void MoveObject()
@@ -120,7 +120,7 @@ namespace Controller
                     InstantiateDots();
                 for (var i = 0; i < _dotPrefabs.Count; i++)
                 {
-                    _dotPrefabs[i].transform.position = CalculatePosition(BootConstantsUtil.DotTimeStep * (i + 1));
+                    _dotPrefabs[i].transform.position = CalculateDotPosition(BootConstantsUtil.DotTimeStep * (i + 1));
                 }   
             }
             else
@@ -134,22 +134,22 @@ namespace Controller
             var screenPointToWorld = _camera.ScreenToWorldPoint(_lastPosition);
             var xPosition = screenPointToWorld.x;
             var yPosition = screenPointToWorld.y;
-            if (xPosition > InitialPosition.x + BootConstantsUtil.XDistanceConstraint)
+            if (xPosition > _initialPosition.x + BootConstantsUtil.XDistanceConstraint)
             {
-                xPosition = InitialPosition.x + BootConstantsUtil.XDistanceConstraint;
+                xPosition = _initialPosition.x + BootConstantsUtil.XDistanceConstraint;
             }
-            else if (xPosition < InitialPosition.x - BootConstantsUtil.XDistanceConstraint)
+            else if (xPosition < _initialPosition.x - BootConstantsUtil.XDistanceConstraint)
             {
-                xPosition = InitialPosition.x - BootConstantsUtil.XDistanceConstraint;
+                xPosition = _initialPosition.x - BootConstantsUtil.XDistanceConstraint;
             }
 
-            if (yPosition > InitialPosition.y + BootConstantsUtil.YUpDistanceConstraint)
+            if (yPosition > _initialPosition.y + BootConstantsUtil.YUpDistanceConstraint)
             {
-                yPosition = InitialPosition.y + BootConstantsUtil.YUpDistanceConstraint;
+                yPosition = _initialPosition.y + BootConstantsUtil.YUpDistanceConstraint;
             }
-            else if (yPosition < InitialPosition.y - BootConstantsUtil.YDownDistanceConstraint)
+            else if (yPosition < _initialPosition.y - BootConstantsUtil.YDownDistanceConstraint)
             {
-                yPosition = InitialPosition.y - BootConstantsUtil.YDownDistanceConstraint;
+                yPosition = _initialPosition.y - BootConstantsUtil.YDownDistanceConstraint;
             }
             transform.position = new Vector3(xPosition, yPosition, BootConstantsUtil.ZFreezePosition);
         }
@@ -164,7 +164,7 @@ namespace Controller
         }
 
 
-        private Vector3 CalculatePosition(float elapsedTime)
+        private Vector3 CalculateDotPosition(float elapsedTime)
         {
             var mass = _rigidBody.mass;
             _forceVector = CalculateForce();
