@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Util;
@@ -7,7 +8,6 @@ namespace Controller
 {
     public class BootController : MonoBehaviour
     {
-        public GameObject trajectoryDotPrefab;
         public bool IsBootMoving { private set; get; }
         private Vector3 _initialPosition;
         private bool _isDragging = false;
@@ -18,45 +18,89 @@ namespace Controller
         private GoalController _goalController;
         private readonly List<GameObject> _dotPrefabs = new List<GameObject>();
         private Vector3 _forceVector = Vector3.zero;
+        private DateTime _bootKickedTime = DateTime.MinValue;
+        private GameManagerUtil _gameManagerUtil;
+        private bool _isLastBoot;
 
         private void Start()
         {
             _initialPosition = transform.position;
             _rigidBody = gameObject.GetComponent<Rigidbody>();
             _goalController = GameObject.FindGameObjectWithTag("GoalController").GetComponent<GoalController>();
+            _gameManagerUtil = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManagerUtil>();
             _rigidBody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX;
             _camera = Camera.main;
         }
 
         private void Update()
         {
-            if (_goalController.BootKickedTime != DateTime.MinValue) return;
-            if (Input.touches.Length == 1)
+            if (_bootKickedTime == DateTime.MinValue)
             {
-                var touch = Input.touches[0];
-                if (!_isDragging)
+                if (Input.touches.Length == 1)
                 {
-                    StartDraggingConfiguration(touch);
+                    ShowTrajectory();
                 }
                 else
                 {
-                    DraggingConfiguration(touch);
+                    ThrowBoot();
                 }
             }
             else
             {
-                if (!_isDragging) return;
-                
-                if (CorrectDirection())
+                if (Mathf.Abs(_rigidBody.velocity.x) < Mathf.Abs(BootConstantsUtil.VelocityToleranceVector.x)
+                    && Mathf.Abs(_rigidBody.velocity.y) < Mathf.Abs(BootConstantsUtil.VelocityToleranceVector.y)
+                    && Mathf.Abs(_rigidBody.velocity.z) < Mathf.Abs(BootConstantsUtil.VelocityToleranceVector.z))
                 {
-                    MoveObject();
-                    ClearDots();
+                    StartCoroutine(DestroyBoot());
                 }
-                else
-                {
-                    transform.position = _initialPosition;
-                }
-                _isDragging = false;
+            }
+        }
+
+        //todo: add destroying animation
+        private IEnumerator DestroyBoot()
+        {
+            yield return new WaitForSeconds(2f);
+            if (_isLastBoot)
+            {
+                _goalController.SetLastBootDestroyed();
+            }
+            Destroy(gameObject);
+        }
+
+        private void ThrowBoot()
+        {
+            if (!_isDragging) return;
+
+            if (CorrectDirection())
+            {
+                MoveObject();
+                ClearDots();
+                StartCoroutine(InstantinateNewBoot());
+            }
+            else
+            {
+                transform.position = _initialPosition;
+            }
+
+            _isDragging = false;
+        }
+
+        private IEnumerator InstantinateNewBoot()
+        {
+            yield return new WaitForSeconds(1.5f);
+            _isLastBoot = _goalController.DecreaseLife();
+        }
+
+        private void ShowTrajectory()
+        {
+            var touch = Input.touches[0];
+            if (!_isDragging)
+            {
+                StartDraggingConfiguration(touch);
+            }
+            else
+            {
+                DraggingConfiguration(touch);
             }
         }
 
@@ -77,7 +121,7 @@ namespace Controller
         {
             for (var i = 0; i < BootConstantsUtil.NumOfDotsToShow; i++)
             {
-                var trajectoryDot = Instantiate(trajectoryDotPrefab);
+                var trajectoryDot = Instantiate(_gameManagerUtil.DotPrefab);
                 _dotPrefabs.Add(trajectoryDot);
             }
         }
@@ -102,7 +146,7 @@ namespace Controller
             if (_forceVector == Vector3.zero) return;
             IsBootMoving = true;
             _rigidBody.AddForce(_forceVector, ForceMode.Impulse);
-            _goalController.BootKickedTime = DateTime.Now;
+            _bootKickedTime = DateTime.Now;
         }
 
         private Vector3 CalculateForce()
@@ -121,7 +165,7 @@ namespace Controller
                 for (var i = 0; i < _dotPrefabs.Count; i++)
                 {
                     _dotPrefabs[i].transform.position = CalculateDotPosition(BootConstantsUtil.DotTimeStep * (i + 1));
-                }   
+                }
             }
             else
             {
@@ -151,6 +195,7 @@ namespace Controller
             {
                 yPosition = _initialPosition.y - BootConstantsUtil.YDownDistanceConstraint;
             }
+
             transform.position = new Vector3(xPosition, yPosition, BootConstantsUtil.ZFreezePosition);
         }
 
@@ -160,6 +205,7 @@ namespace Controller
             {
                 Destroy(i);
             }
+
             _dotPrefabs.Clear();
         }
 

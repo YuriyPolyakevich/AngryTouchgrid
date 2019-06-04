@@ -3,28 +3,28 @@ using UnityEngine;
 
 public class SlingShotController : MonoBehaviour
 {
-    private GameObject _boot;
-    private Rigidbody _rigidbody;
+    public GameObject Boot {private get; set; }
+    private Rigidbody _rigidBody;
     private BootController _bootController;
 
     private void Start()
     {
-        _boot = GameObject.FindGameObjectWithTag("Player");
-        _bootController = _boot.GetComponent<BootController>();
-        _rigidbody = GetComponent<Rigidbody>();
+        Boot = GameObject.FindGameObjectWithTag("Player");
+        _bootController = Boot.GetComponent<BootController>();
+        _rigidBody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (_rigidbody.isKinematic)
+        if (_rigidBody.isKinematic)
         {
-            transform.position = _boot.transform.position;
+            transform.position = Boot.transform.position;
         }
 
-        if (_bootController.IsBootMoving && _rigidbody.isKinematic)
+        if (_bootController.IsBootMoving && _rigidBody.isKinematic)
         {
-            _rigidbody.isKinematic = false;
+            _rigidBody.isKinematic = false;
         }
     }
 }

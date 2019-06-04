@@ -99,9 +99,10 @@ GameObject:
   - component: {fileID: 4368507974548896}
   - component: {fileID: 54037310361583408}
   - component: {fileID: 145922948828990004}
+  - component: {fileID: 114452608058334188}
   m_Layer: 0
   m_Name: Main
-  m_TagString: Untagged
+  m_TagString: SlingShot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -350,6 +351,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &114452608058334188
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1670017843345914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 686e131b25688e1429ba81f22df12491, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!137 &137369622615877084
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
