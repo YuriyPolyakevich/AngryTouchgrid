@@ -121,36 +121,18 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4389341623350178, guid: f2c8ac101ec2bb74480d87c4858173a8, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4389341623350178, guid: f2c8ac101ec2bb74480d87c4858173a8, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4389341623350178, guid: f2c8ac101ec2bb74480d87c4858173a8, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4389341623350178, guid: f2c8ac101ec2bb74480d87c4858173a8, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4389341623350178, guid: f2c8ac101ec2bb74480d87c4858173a8, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4389341623350178, guid: f2c8ac101ec2bb74480d87c4858173a8, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4389341623350178, guid: f2c8ac101ec2bb74480d87c4858173a8, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4389341623350178, guid: f2c8ac101ec2bb74480d87c4858173a8, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 145922948828990004, guid: f2c8ac101ec2bb74480d87c4858173a8,
+        type: 2}
+      propertyPath: m_ConnectedAnchor.x
+      value: 0.0000005271286
+      objectReference: {fileID: 0}
+    - target: {fileID: 145922948828990004, guid: f2c8ac101ec2bb74480d87c4858173a8,
+        type: 2}
+      propertyPath: m_ConnectedAnchor.z
+      value: 0.059999734
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f2c8ac101ec2bb74480d87c4858173a8, type: 2}
