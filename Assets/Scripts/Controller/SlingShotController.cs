@@ -1,5 +1,7 @@
-﻿using Controller;
+﻿using Configuration.Exception;
+using Controller;
 using UnityEngine;
+using Util;
 
 public class SlingShotController : MonoBehaviour
 {
@@ -9,8 +11,21 @@ public class SlingShotController : MonoBehaviour
 
     private void Start()
     {
-        Boot = GameObject.FindGameObjectWithTag("Player");
+        if (GameObject.FindGameObjectWithTag(TagUtil.Player) == null)
+        {
+            throw new MissingTagException(TagUtil.Player);
+        }
+
+        if (GameObject.FindGameObjectWithTag(TagUtil.Player).GetComponent<BootController>() == null)
+        {
+            throw new CustomMissingComponentException(TagUtil.BootController);
+        }
+        Boot = GameObject.FindGameObjectWithTag(TagUtil.Player);
         _bootController = Boot.GetComponent<BootController>();
+        if (GetComponent<Rigidbody>() == null)
+        {
+            throw new CustomMissingComponentException(TagUtil.RigidBody);
+        }
         _rigidBody = GetComponent<Rigidbody>();
     }
 
@@ -27,4 +42,5 @@ public class SlingShotController : MonoBehaviour
             _rigidBody.isKinematic = false;
         }
     }
+
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Configuration.Exception;
 using UnityEngine;
 using Util;
 
@@ -10,26 +11,62 @@ namespace Controller
     {
         public bool IsBootMoving { private set; get; }
         private Vector3 _initialPosition;
-        private bool _isDragging = false;
         private Vector3 _firstPosition = Vector3.zero;
         private Vector3 _lastPosition = Vector3.zero;
         private Rigidbody _rigidBody = null;
         private Camera _camera;
         private GoalController _goalController;
-        private readonly List<GameObject> _dotPrefabs = new List<GameObject>();
         private Vector3 _forceVector = Vector3.zero;
         private DateTime _bootKickedTime = DateTime.MinValue;
         private GameManagerUtil _gameManagerUtil;
         private bool _isLastBoot;
+        private bool _isDragging = false;
+        private readonly List<GameObject> _dotPrefabs = new List<GameObject>();
 
         private void Start()
         {
             _initialPosition = transform.position;
-            _rigidBody = gameObject.GetComponent<Rigidbody>();
-            _goalController = GameObject.FindGameObjectWithTag("GoalController").GetComponent<GoalController>();
-            _gameManagerUtil = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManagerUtil>();
+            if (GetComponent<Rigidbody>() == null)
+            {
+                throw new CustomMissingComponentException(TagUtil.RigidBody);
+            }
+            _rigidBody = GetComponent<Rigidbody>();
             _rigidBody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX;
+            if (Camera.main == null)
+            {
+                throw new MissingTagException(TagUtil.Camera);
+            }
             _camera = Camera.main;
+            GetGameObjects();
+        }
+
+        private void GetGameObjects()
+        {
+            if (GameObject.FindGameObjectWithTag(TagUtil.GoalController) == null)
+            {
+                throw new MissingTagException(TagUtil.GoalController);
+            }
+
+            if (GameObject.FindGameObjectWithTag(TagUtil.GoalController).GetComponent<GoalController>() == null)
+            {
+                throw new CustomMissingComponentException(TagUtil.GoalController);
+            }
+            _goalController = GameObject.FindGameObjectWithTag(TagUtil.GoalController).GetComponent<GoalController>();
+            if (GameObject.FindGameObjectWithTag(TagUtil.GameController) == null)
+            {
+                throw new MissingTagException(TagUtil.GameController);
+            }
+            if (GameObject.FindGameObjectWithTag(TagUtil.GameController).GetComponent<GameManagerUtil>() == null)
+            {
+                throw new CustomMissingComponentException(TagUtil.GameManagerUtil);
+            }
+            _gameManagerUtil = GameObject.FindGameObjectWithTag(TagUtil.GameController).GetComponent<GameManagerUtil>();
+            if (GameObject.FindGameObjectWithTag(TagUtil.SlingShot) == null)
+            {
+                throw new MissingTagException(TagUtil.SlingShot);
+            }
+            var slingShotPosition = GameObject.FindGameObjectWithTag(TagUtil.SlingShot).transform.position;
+            _firstPosition = _camera.WorldToScreenPoint(slingShotPosition);
         }
 
         private void Update()
@@ -113,7 +150,6 @@ namespace Controller
         {
             if (!IsHit(touch)) return;
             _isDragging = true;
-            _firstPosition = touch.position;
             InstantiateDots();
         }
 

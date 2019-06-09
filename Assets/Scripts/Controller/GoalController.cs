@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Configuration;
+using Configuration.Exception;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Util;
@@ -23,23 +24,39 @@ namespace Controller
         private bool _isLastBoot = false;
         private void Start()
         {
+            SetStartingLives();
+            SetSlingShotController();
+            _rect = new Rect(x: Screen.width / 2, y: Screen.height / 2, width: Screen.width / 6,
+                height: Screen.height / 4);
+            _guiStyle = new GUIStyle {fontSize = 40, fontStyle = FontStyle.BoldAndItalic};
+        }
+
+        private void SetSlingShotController()
+        {
+            if (GameObject.FindGameObjectWithTag(TagUtil.SlingShot) == null)
+            {
+                throw new MissingTagException(TagUtil.SlingShot);
+            }
+
+            if (GameObject.FindGameObjectWithTag(TagUtil.SlingShot).GetComponent<SlingShotController>() == null)
+            {
+                throw new CustomMissingComponentException(TagUtil.SlingShotController);
+            }
+            _slingShotController = GameObject.FindGameObjectWithTag(TagUtil.SlingShot).GetComponent<SlingShotController>();
+        }
+
+        private void SetStartingLives()
+        {
             if (!GlobalConfiguration.IsDevMode())
             {
-                if (_previousSceneBuildIndex != SceneManager.GetActiveScene().buildIndex)
-                {
-                    _lives = 3;
-                    _previousSceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
-                }
+                if (_previousSceneBuildIndex == SceneManager.GetActiveScene().buildIndex) return;
+                _lives = 3;
+                _previousSceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
             }
             else
             {
                 _lives = 3;
             }
-
-            _slingShotController = GameObject.FindGameObjectWithTag("SlingShot").GetComponent<SlingShotController>();
-            _rect = new Rect(x: Screen.width / 2, y: Screen.height / 2, width: Screen.width / 6,
-                height: Screen.height / 4);
-            _guiStyle = new GUIStyle {fontSize = 40, fontStyle = FontStyle.BoldAndItalic};
         }
 
 

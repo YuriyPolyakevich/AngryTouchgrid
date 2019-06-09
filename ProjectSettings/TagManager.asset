@@ -9,6 +9,7 @@ TagManager:
   - BallSpawner
   - LevelController
   - GoalController
+  - SlingShot
   layers:
   - Default
   - TransparentFX
