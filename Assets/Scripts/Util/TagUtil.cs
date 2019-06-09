@@ -11,5 +11,6 @@ namespace Util
         public const string GameManagerUtil = "GameManagerUtil";
         public const string SlingShotController = "SlingShotController";
         public const string BootController = "BootController";
+        public const string Ball = "Ball";
     }
 }

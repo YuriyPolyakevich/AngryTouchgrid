@@ -21,7 +21,6 @@ namespace Controller
         private DateTime _noGoalDetectingTime = DateTime.MinValue;
         private SlingShotController _slingShotController;
         private bool _isLastBootBeenDestroyed = false;
-        private bool _isLastBoot = false;
         private void Start()
         {
             SetStartingLives();
@@ -112,7 +111,7 @@ namespace Controller
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other == null || !other.gameObject.tag.Equals("Ball")) return;
+            if (other == null || !other.gameObject.tag.Equals(TagUtil.Ball)) return;
             _isGoal = true;
             GoToNextLevel();
         }

@@ -199,8 +199,7 @@ namespace Controller
 
         private void DraggingConfiguration(Touch touch)
         {
-            _lastPosition = touch.position;
-            ChangeBootPosition();
+            ChangeBootPosition(touch.position);
             if (CorrectDirection())
             {
                 if (_dotPrefabs.Count == 0)
@@ -216,9 +215,9 @@ namespace Controller
             }
         }
 
-        private void ChangeBootPosition()
+        private void ChangeBootPosition(Vector2 touchPosition)
         {
-            var screenPointToWorld = _camera.ScreenToWorldPoint(_lastPosition);
+            var screenPointToWorld = _camera.ScreenToWorldPoint(touchPosition);
             var xPosition = screenPointToWorld.x;
             var yPosition = screenPointToWorld.y;
             if (xPosition > _initialPosition.x + BootConstantsUtil.XDistanceConstraint)
@@ -239,7 +238,9 @@ namespace Controller
                 yPosition = _initialPosition.y - BootConstantsUtil.YDownDistanceConstraint;
             }
 
-            transform.position = new Vector3(xPosition, yPosition, BootConstantsUtil.ZFreezePosition);
+            var position = new Vector3(xPosition, yPosition, BootConstantsUtil.ZFreezePosition);
+            transform.position = position;
+            _lastPosition = _camera.WorldToScreenPoint(position);
         }
 
         private void ClearDots()
