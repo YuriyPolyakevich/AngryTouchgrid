@@ -45,7 +45,7 @@ namespace Controller
             _slingShotController = GameObject.FindGameObjectWithTag(TagUtil.SlingShot).GetComponent<SlingShotController>();
         }
 
-        private void SetStartingLives()
+        private static void SetStartingLives()
         {
             if (!GlobalConfiguration.IsDevMode())
             {
@@ -85,7 +85,7 @@ namespace Controller
         public bool DecreaseLife()
         {
             _lives--;
-            if (_lives > 0)
+            if (_lives > 0 && !_isGoal && !_isWin)
             {
                 _slingShotController.Boot = Instantiate(BootPrefab);
                 return true;
@@ -99,12 +99,12 @@ namespace Controller
             _isLastBootBeenDestroyed = true;
         }
 
-        private void UpdateScene()
+        private static void UpdateScene()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
-        private IEnumerator ReturnObjectsToStartPositions()
+        private static IEnumerator ReturnObjectsToStartPositions()
         {
             yield return new WaitForSeconds(2);
             UpdateScene();

@@ -20,7 +20,7 @@ namespace Controller
         private DateTime _bootKickedTime = DateTime.MinValue;
         private GameManagerUtil _gameManagerUtil;
         private bool _isLastBoot;
-        private bool _isDragging = false;
+        private bool _isDragging;
         private readonly List<GameObject> _dotPrefabs = new List<GameObject>();
 
         private void Start()
@@ -30,18 +30,20 @@ namespace Controller
             {
                 throw new CustomMissingComponentException(TagUtil.RigidBody);
             }
+
             _rigidBody = GetComponent<Rigidbody>();
             _rigidBody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX;
-            if (Camera.main == null)
-            {
-                throw new MissingTagException(TagUtil.Camera);
-            }
-            _camera = Camera.main;
             GetGameObjects();
         }
 
         private void GetGameObjects()
         {
+            if (Camera.main == null)
+            {
+                throw new MissingTagException(TagUtil.Camera);
+            }
+
+            _camera = Camera.main;
             if (GameObject.FindGameObjectWithTag(TagUtil.GoalController) == null)
             {
                 throw new MissingTagException(TagUtil.GoalController);
@@ -51,20 +53,24 @@ namespace Controller
             {
                 throw new CustomMissingComponentException(TagUtil.GoalController);
             }
+
             _goalController = GameObject.FindGameObjectWithTag(TagUtil.GoalController).GetComponent<GoalController>();
             if (GameObject.FindGameObjectWithTag(TagUtil.GameController) == null)
             {
                 throw new MissingTagException(TagUtil.GameController);
             }
+
             if (GameObject.FindGameObjectWithTag(TagUtil.GameController).GetComponent<GameManagerUtil>() == null)
             {
                 throw new CustomMissingComponentException(TagUtil.GameManagerUtil);
             }
+
             _gameManagerUtil = GameObject.FindGameObjectWithTag(TagUtil.GameController).GetComponent<GameManagerUtil>();
             if (GameObject.FindGameObjectWithTag(TagUtil.SlingShot) == null)
             {
                 throw new MissingTagException(TagUtil.SlingShot);
             }
+
             var slingShotPosition = GameObject.FindGameObjectWithTag(TagUtil.SlingShot).transform.position;
             _firstPosition = _camera.WorldToScreenPoint(slingShotPosition);
         }
@@ -101,6 +107,7 @@ namespace Controller
             {
                 _goalController.SetLastBootDestroyed();
             }
+
             Destroy(gameObject);
         }
 
@@ -112,7 +119,7 @@ namespace Controller
             {
                 MoveObject();
                 ClearDots();
-                StartCoroutine(InstantinateNewBoot());
+                StartCoroutine(InstantiateNewBoot());
             }
             else
             {
@@ -122,7 +129,7 @@ namespace Controller
             _isDragging = false;
         }
 
-        private IEnumerator InstantinateNewBoot()
+        private IEnumerator InstantiateNewBoot()
         {
             yield return new WaitForSeconds(1.5f);
             _isLastBoot = _goalController.DecreaseLife();
@@ -148,7 +155,7 @@ namespace Controller
 
         private void StartDraggingConfiguration(Touch touch)
         {
-            if (!IsHit(touch)) return;
+            if (!IsBootHit(touch)) return;
             _isDragging = true;
             InstantiateDots();
         }
@@ -170,11 +177,11 @@ namespace Controller
             }
         }
 
-        private bool IsHit(Touch touch)
+        private bool IsBootHit(Touch touch)
         {
             RaycastHit rayCastHit;
             var ray = _camera.ScreenPointToRay(touch.position);
-            return Physics.Raycast(ray, out rayCastHit) && rayCastHit.transform.gameObject.tag.Equals("Player");
+            return Physics.Raycast(ray, out rayCastHit) && rayCastHit.transform.gameObject.tag.Equals(TagUtil.Player);
         }
 
         private void MoveObject()
