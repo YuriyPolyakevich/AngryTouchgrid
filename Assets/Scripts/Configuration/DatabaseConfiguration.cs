@@ -15,7 +15,7 @@ namespace Configuration
         {
         }
 
-
+//TODO: КАКИМ-ТО ХУЕМ ПРИЛЕПИТЬ СЮДА ORM!!!!!!!
 
         private static string GetDatabasePath()
         {
