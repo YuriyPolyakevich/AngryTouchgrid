@@ -9,7 +9,7 @@ namespace Util
         public const int NumOfDotsToShow = 10;
         public const int Force = 70;
         public const int XDistanceConstraint = 5;
-        public const int YUpDistanceConstraint = 10;
+        public const int YUpDistanceConstraint = 6;
         public const int YDownDistanceConstraint = 4;
         public const int OpacityDuration = 2;
         public static readonly Vector3 VelocityToleranceVector = new Vector3(0.5f, 0.5f, 0.5f);

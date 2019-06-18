@@ -146,7 +146,7 @@ namespace Controller
         private IEnumerator NextLevel()
         {
             yield return new WaitForSeconds(2);
-            if (LevelUtil.LoadNextLevel()) yield break;
+            if (LevelUtil.LoadNextLevel(_lives)) yield break;
             _isGoal = false;
             _isWin = true;
         }

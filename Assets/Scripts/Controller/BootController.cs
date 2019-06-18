@@ -10,6 +10,7 @@ namespace Controller
     public class BootController : MonoBehaviour
     {
         public bool IsBootMoving { private set; get; }
+        public bool IsDragging { get; private set; }
         private Vector3 _initialPosition;
         private Vector3 _firstPosition = Vector3.zero;
         private Vector3 _lastPosition = Vector3.zero;
@@ -20,7 +21,6 @@ namespace Controller
         private DateTime _bootKickedTime = DateTime.MinValue;
         private GameManagerUtil _gameManagerUtil;
         private bool _isLastBoot;
-        private bool _isDragging;
         private readonly List<GameObject> _dotPrefabs = new List<GameObject>();
 
         private void Start()
@@ -113,7 +113,7 @@ namespace Controller
 
         private void ThrowBoot()
         {
-            if (!_isDragging) return;
+            if (!IsDragging) return;
 
             if (CorrectDirection())
             {
@@ -126,7 +126,7 @@ namespace Controller
                 transform.position = _initialPosition;
             }
 
-            _isDragging = false;
+            IsDragging = false;
         }
 
         private IEnumerator InstantiateNewBoot()
@@ -138,7 +138,7 @@ namespace Controller
         private void ShowTrajectory()
         {
             var touch = Input.touches[0];
-            if (!_isDragging)
+            if (!IsDragging)
             {
                 StartDraggingConfiguration(touch);
             }
@@ -156,7 +156,7 @@ namespace Controller
         private void StartDraggingConfiguration(Touch touch)
         {
             if (!IsBootHit(touch)) return;
-            _isDragging = true;
+            IsDragging = true;
             InstantiateDots();
         }
 
@@ -218,26 +218,10 @@ namespace Controller
         private void ChangeBootPosition(Vector2 touchPosition)
         {
             var screenPointToWorld = _camera.ScreenToWorldPoint(touchPosition);
-            var xPosition = screenPointToWorld.x;
-            var yPosition = screenPointToWorld.y;
-            if (xPosition > _initialPosition.x + BootConstantsUtil.XDistanceConstraint)
-            {
-                xPosition = _initialPosition.x + BootConstantsUtil.XDistanceConstraint;
-            }
-            else if (xPosition < _initialPosition.x - BootConstantsUtil.XDistanceConstraint)
-            {
-                xPosition = _initialPosition.x - BootConstantsUtil.XDistanceConstraint;
-            }
-
-            if (yPosition > _initialPosition.y + BootConstantsUtil.YUpDistanceConstraint)
-            {
-                yPosition = _initialPosition.y + BootConstantsUtil.YUpDistanceConstraint;
-            }
-            else if (yPosition < _initialPosition.y - BootConstantsUtil.YDownDistanceConstraint)
-            {
-                yPosition = _initialPosition.y - BootConstantsUtil.YDownDistanceConstraint;
-            }
-
+            var xPosition = Mathf.Clamp(screenPointToWorld.x, _initialPosition.x - BootConstantsUtil.XDistanceConstraint,
+                _initialPosition.x + BootConstantsUtil.XDistanceConstraint);
+            var yPosition = Mathf.Clamp(screenPointToWorld.y, _initialPosition.y - BootConstantsUtil.YDownDistanceConstraint,
+                _initialPosition.y + BootConstantsUtil.YUpDistanceConstraint);
             var position = new Vector3(xPosition, yPosition, BootConstantsUtil.ZFreezePosition);
             transform.position = position;
             _lastPosition = _camera.WorldToScreenPoint(position);

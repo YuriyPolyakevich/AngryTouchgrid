@@ -12,5 +12,6 @@ namespace Util
         public const string SlingShotController = "SlingShotController";
         public const string BootController = "BootController";
         public const string Ball = "Ball";
+        public const string MainCamera = "MainCamera";
     }
 }
