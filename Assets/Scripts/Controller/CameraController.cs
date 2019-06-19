@@ -6,17 +6,13 @@ using Util;
 
 public class CameraController : MonoBehaviour
 {
-    private const int MaxDeltaOrthographicSize = 6;
     private float _maxCameraOrthographicSize;
     private float _minCameraOrthographicSize;
-    private const int DistanceCoefficient = 40;
-    private Camera _camera;
-    private const float ZeroFloatValue = 0.0f;
-    private float _previousDistance = ZeroFloatValue;
-    private Vector2 _firstTouchPosition = Vector2.zero;
     private float _initialXPosition;
     private float _maxDeltaX;
-    private float _calculatedInAccuracy = 4f;
+    private float _previousDistance = CameraConstantsUtil.ZeroFloatValue;
+    private Camera _camera;
+    private Vector2 _firstTouchPosition = Vector2.zero;
     private BootController _bootController;
     private void Start()
     {
@@ -28,9 +24,8 @@ public class CameraController : MonoBehaviour
         _initialXPosition = position.x;
         var orthographicSize = _camera.orthographicSize;
         _maxCameraOrthographicSize = orthographicSize;
-        _minCameraOrthographicSize = _maxCameraOrthographicSize - MaxDeltaOrthographicSize;
+        _minCameraOrthographicSize = _maxCameraOrthographicSize - CameraConstantsUtil.MaxDeltaOrthographicSize;
         _maxDeltaX = CalculateCameraXBorders(orthographicSize);
-        _maxDeltaX -= (_maxDeltaX / 2 + _calculatedInAccuracy);
     }
 
     private void GetBootGameObject()
@@ -56,7 +51,7 @@ public class CameraController : MonoBehaviour
             var firstTouch = Input.touches[0];
             var secondTouch = Input.touches[1];
             var distance = Vector2.Distance(firstTouch.position, secondTouch.position);
-            if (_previousDistance == ZeroFloatValue)
+            if (Math.Abs(_previousDistance - CameraConstantsUtil.ZeroFloatValue) < 0.0001f)
             {
                 _previousDistance = distance;
             }
@@ -72,7 +67,7 @@ public class CameraController : MonoBehaviour
                 MoveCamera(Input.touches[0]);
             }
 
-            _previousDistance = ZeroFloatValue;
+            _previousDistance = CameraConstantsUtil.ZeroFloatValue;
         }
     }
 
@@ -100,7 +95,8 @@ public class CameraController : MonoBehaviour
     private Vector3 CorrectDeltaPosition(Vector3 newTransformVector)
     {
         var position = transform.position;
-        var currentDeltaX = newTransformVector.x * Time.deltaTime * 4;
+        var currentDeltaX = newTransformVector.x * Time.deltaTime * CameraConstantsUtil.DeltaTimeCoefficient;
+        var currentDeltaY = newTransformVector.y * Time.deltaTime * CameraConstantsUtil.DeltaTimeCoefficient;
         var newX = Mathf.Clamp(position.x + currentDeltaX, _initialXPosition - _maxDeltaX, 
             _initialXPosition + _maxDeltaX);
         if (Math.Abs(_initialXPosition - _maxDeltaX - newX) < 0.001f || Math.Abs(_initialXPosition + _maxDeltaX - newX) < 0.001f)
@@ -115,12 +111,12 @@ public class CameraController : MonoBehaviour
     {
         if (_previousDistance < distance)
         {
-            _camera.orthographicSize =  _camera.orthographicSize - Time.deltaTime * distance / DistanceCoefficient;
+            _camera.orthographicSize =  _camera.orthographicSize - Time.deltaTime * distance / CameraConstantsUtil.DistanceCoefficient;
         }
         else if (_previousDistance > distance)
             
         {
-            var newOrthographicSize = _camera.orthographicSize + Time.deltaTime * distance / DistanceCoefficient;
+            var newOrthographicSize = _camera.orthographicSize + Time.deltaTime * distance / CameraConstantsUtil.DistanceCoefficient;
             if (Math.Abs(_camera.orthographicSize - _maxCameraOrthographicSize) > 0.001f)
             {
                 MoveBeforeZoomIfNeeded(newOrthographicSize);   
@@ -134,7 +130,7 @@ public class CameraController : MonoBehaviour
     private void MoveBeforeZoomIfNeeded(float orthographicSize)
     {
         var position = _camera.transform.position;
-        var deltaX = CalculateCameraXBorders(orthographicSize) * Time.deltaTime * 4;
+        var deltaX = CalculateCameraXBorders(orthographicSize) * Time.deltaTime * CameraConstantsUtil.DeltaTimeCoefficient;
         if (position.x + deltaX > _initialXPosition + _maxDeltaX)
         {
             _camera.transform.position = new Vector3(position.x - deltaX, position.y, position.z);
