@@ -38,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1045119499136750}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.96, y: 2.71, z: 0}
+  m_LocalPosition: {x: -26.3, y: 6.79, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -112,8 +112,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d42ac80324674741b9b58fa9fabf20e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trajectoryDotPrefab: {fileID: 1835448398654350, guid: 9206c73727c438c4789489e4b27391e5,
-    type: 2}
 --- !u!136 &136058255502898756
 CapsuleCollider:
   m_ObjectHideFlags: 1
