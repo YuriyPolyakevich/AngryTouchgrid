@@ -86,7 +86,8 @@ namespace Controller
             _lives--;
             if (_lives > 0 && !_isGoal && !_isWin)
             {
-                _slingShotController.Boot = Instantiate(BootPrefab);
+                var boot = _slingShotController.Boot = Instantiate(BootPrefab);
+                CameraController.SetNewBoot(boot);
                 return true;
             }
 

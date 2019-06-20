@@ -13,6 +13,8 @@ namespace Controller
         public bool IsDragging { get; private set; }
         private Vector3 _initialPosition;
         private Vector3 _firstPosition = Vector3.zero;
+        private GameObject _slingShot;
+        private Vector3 _slingShotPosition = Vector3.zero;
         private Vector3 _lastPosition = Vector3.zero;
         private Rigidbody _rigidBody = null;
         private Camera _camera;
@@ -40,7 +42,7 @@ namespace Controller
         {
             if (Camera.main == null)
             {
-                throw new MissingTagException(TagUtil.Camera);
+                throw new MissingTagException(TagUtil.MainCamera);
             }
 
             _camera = Camera.main;
@@ -71,8 +73,22 @@ namespace Controller
                 throw new MissingTagException(TagUtil.SlingShot);
             }
 
-            var slingShotPosition = GameObject.FindGameObjectWithTag(TagUtil.SlingShot).transform.position;
-            _firstPosition = _camera.WorldToScreenPoint(slingShotPosition);
+            _slingShot = GameObject.FindGameObjectWithTag(TagUtil.SlingShot);
+            _slingShotPosition = _slingShot.transform.position;
+
+            if (GetComponent<BootController>() == null)
+            {
+                throw new CustomMissingComponentException(TagUtil.BootController);
+            }
+            
+            if (_slingShot.GetComponent<SlingShotController>() == null)
+            {
+                throw new CustomMissingComponentException(TagUtil.SlingShotController);
+            }
+            
+            var slingShotController = _slingShot.GetComponent<SlingShotController>();
+            slingShotController.BootController = GetComponent<BootController>();
+            slingShotController.Boot = gameObject;
         }
 
         private void Update()
@@ -81,6 +97,7 @@ namespace Controller
             {
                 if (Input.touches.Length == 1)
                 {
+                    _firstPosition = _camera.WorldToScreenPoint(_slingShotPosition);
                     ShowTrajectory();
                 }
                 else
@@ -242,11 +259,11 @@ namespace Controller
         {
             var mass = _rigidBody.mass;
             _forceVector = CalculateForce();
-            var calculatePosition = transform.position +
+            var calculatedPosition = transform.position +
                                     (_forceVector / mass) * elapsedTime
                                     + BootConstantsUtil.GravityVector * elapsedTime * elapsedTime / 2;
 
-            return calculatePosition;
+            return calculatedPosition;
         }
     }
 }

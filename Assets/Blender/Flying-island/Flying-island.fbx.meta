@@ -1,25 +1,57 @@
 fileFormatVersion: 2
-guid: 6d58037af810b4021ac921a71033e575
+guid: 4366aa8262919d84bbecbf61435ddea0
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: Oak
-    2186277476908879412: ImportLogs
+    100000: FLoatingIsland-LPM.Base
+    100002: FLoatingIsland-LPM.grass
+    100004: //RootNode
+    100006: Camera
+    100008: FLoatingIsland
+    100010: FLoatingIsland-BGI
+    100012: FLoatingIsland-HPM
+    100014: Light
+    100016: Light.001
+    400000: FLoatingIsland-LPM.Base
+    400002: FLoatingIsland-LPM.grass
+    400004: //RootNode
+    400006: Camera
+    400008: FLoatingIsland
+    400010: FLoatingIsland-BGI
+    400012: FLoatingIsland-HPM
+    400014: Light
+    400016: Light.001
+    2000000: Camera
+    2100000: Base
+    2100002: grass
+    2100004: temp
+    2300000: FLoatingIsland-LPM.Base
+    2300002: FLoatingIsland-LPM.grass
+    2300004: FLoatingIsland-HPM
+    3300000: FLoatingIsland-LPM.Base
+    3300002: FLoatingIsland-LPM.grass
+    3300004: FLoatingIsland-HPM
+    4300000: FLoatingIsland-LPM.Base
+    4300002: FLoatingIsland-LPM.grass
+    4300004: FLoatingIsland-HPM
+    10800000: Light
+    10800002: Light.001
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: No Name
-    second: {fileID: 2100000, guid: 98189d553b7404d8290e447fb600ac6f, type: 2}
+      name: Base
+    second: {fileID: 2100000, guid: 96784cbdd110e2c408fa4eea3b523bdd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: grass
+    second: {fileID: 2100000, guid: 369ad6e42fac6aa41b023bfc0041f0a2, type: 2}
   materials:
     importMaterials: 1
-    materialName: 0
-    materialSearch: 1
-    materialLocation: 0
+    materialName: 1
+    materialSearch: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -48,18 +80,18 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importVisibility: 0
+    importVisibility: 1
     importBlendShapes: 1
-    importCameras: 0
-    importLights: 0
+    importCameras: 1
+    importLights: 1
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
-    indexFormat: 1
+    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -68,8 +100,8 @@ ModelImporter:
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
-    tangentImportMode: 4
-    normalCalculationMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -87,7 +119,7 @@ ModelImporter:
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
-    skeletonHasParents: 0
+    skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 0
   humanoidOversampling: 1

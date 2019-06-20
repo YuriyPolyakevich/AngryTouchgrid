@@ -4,6 +4,7 @@ using Controller;
 using UnityEngine;
 using Util;
 
+//todo: fix bug with boot respawn, fix zoom etc.
 public class CameraController : MonoBehaviour
 {
     private float _maxCameraOrthographicSize;
@@ -13,22 +14,31 @@ public class CameraController : MonoBehaviour
     private float _previousDistance = CameraConstantsUtil.ZeroFloatValue;
     private Camera _camera;
     private Vector2 _firstTouchPosition = Vector2.zero;
-    private BootController _bootController;
+    private static BootController _bootController;
     private void Start()
     {
-        _camera = Camera.main;
-        if (_camera == null)
-            throw new CustomMissingComponentException(TagUtil.MainCamera);
         GetBootGameObject();
         var position = _camera.transform.position;
         _initialXPosition = position.x;
         var orthographicSize = _camera.orthographicSize;
-        _maxCameraOrthographicSize = orthographicSize;
-        _minCameraOrthographicSize = _maxCameraOrthographicSize - CameraConstantsUtil.MaxDeltaOrthographicSize;
+        _maxCameraOrthographicSize = orthographicSize + CameraConstantsUtil.MaxDeltaOrthographicSize * 2;
+        _minCameraOrthographicSize = orthographicSize - CameraConstantsUtil.MaxDeltaOrthographicSize * 2;
         _maxDeltaX = CalculateCameraXBorders(orthographicSize);
+        _maxDeltaX -= _maxDeltaX / 1.5f;
     }
 
     private void GetBootGameObject()
+    {
+        FindBootGameObject();
+
+        if (GetComponent<Camera>() == null)
+        {
+            throw new CustomMissingComponentException(TagUtil.MainCamera);
+        }
+        _camera = GetComponent<Camera>();
+    }
+
+    private static void FindBootGameObject()
     {
         var bootGameObject = GameObject.FindGameObjectWithTag(TagUtil.Player);
         if (bootGameObject == null)
@@ -62,7 +72,8 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            if (Input.touchCount == 1 && !_bootController.IsDragging)
+            if (Input.touchCount == 1 && !_bootController.IsDragging 
+                && Math.Abs(_camera.orthographicSize - _maxCameraOrthographicSize) > 0.001f)
             {
                 MoveCamera(Input.touches[0]);
             }
@@ -129,15 +140,18 @@ public class CameraController : MonoBehaviour
 
     private void MoveBeforeZoomIfNeeded(float orthographicSize)
     {
-        var position = _camera.transform.position;
-        var deltaX = CalculateCameraXBorders(orthographicSize) * Time.deltaTime * CameraConstantsUtil.DeltaTimeCoefficient;
-        if (position.x + deltaX > _initialXPosition + _maxDeltaX)
-        {
-            _camera.transform.position = new Vector3(position.x - deltaX, position.y, position.z);
-        } else if (position.x - deltaX < _initialXPosition - _maxDeltaX)
-        {
-            _camera.transform.position = new Vector3(position.x + deltaX, position.y, position.z);
-        }
+        var distanceBetweenX = _camera.transform.position.x - _initialXPosition;
+        
+        
+//        var position = _camera.transform.position;
+//        var deltaX = CalculateCameraXBorders(orthographicSize) * Time.deltaTime;
+//        if (position.x + deltaX > _initialXPosition + _maxDeltaX)
+//        {
+//            _camera.transform.position = new Vector3(position.x - deltaX, position.y, position.z);
+//        } else if (position.x - deltaX < _initialXPosition - _maxDeltaX)
+//        {
+//            _camera.transform.position = new Vector3(position.x + deltaX, position.y, position.z);
+//        }
     }
     
     private float CalculateCameraXBorders(float orthographicSize)
@@ -151,5 +165,10 @@ public class CameraController : MonoBehaviour
     {
         _camera.orthographicSize =
             Mathf.Clamp(_camera.orthographicSize, _minCameraOrthographicSize, _maxCameraOrthographicSize);
+    }
+
+    public static void SetNewBoot(GameObject boot)
+    {
+        _bootController = boot.GetComponent<BootController>();
     }
 }

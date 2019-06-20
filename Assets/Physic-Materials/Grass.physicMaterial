@@ -7,7 +7,7 @@ PhysicMaterial:
   m_PrefabInternal: {fileID: 0}
   m_Name: Grass
   dynamicFriction: 0.3
-  staticFriction: 0.9
-  bounciness: 0.4
+  staticFriction: 0.85
+  bounciness: 0.3
   frictionCombine: 0
-  bounceCombine: 0
+  bounceCombine: 1

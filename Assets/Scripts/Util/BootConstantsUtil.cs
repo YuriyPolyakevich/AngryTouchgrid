@@ -7,7 +7,7 @@ namespace Util
         public const float ZFreezePosition = 0;
         public const float DotTimeStep = 0.05f;
         public const int NumOfDotsToShow = 10;
-        public const int Force = 70;
+        public const int Force = 200;
         public const int XDistanceConstraint = 5;
         public const int YUpDistanceConstraint = 6;
         public const int YDownDistanceConstraint = 4;

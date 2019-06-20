@@ -7,7 +7,6 @@ namespace Util
         public const string GameController = "GameController";
         public const string Player = "Player";
         public const string RigidBody = "RigidBody";
-        public const string Camera = "MainCamera";
         public const string GameManagerUtil = "GameManagerUtil";
         public const string SlingShotController = "SlingShotController";
         public const string BootController = "BootController";
