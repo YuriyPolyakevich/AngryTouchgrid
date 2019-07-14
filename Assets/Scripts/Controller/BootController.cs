@@ -16,7 +16,7 @@ namespace Controller
         private GameObject _slingShot;
         private Vector3 _slingShotPosition = Vector3.zero;
         private Vector3 _lastPosition = Vector3.zero;
-        private Rigidbody _rigidBody = null;
+        private Rigidbody _rigidBody;
         private Camera _camera;
         private GoalController _goalController;
         private Vector3 _forceVector = Vector3.zero;

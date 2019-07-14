@@ -1,5 +1,4 @@
-﻿using System;
-using Configuration.Exception;
+﻿using Configuration.Exception;
 using Controller;
 using UnityEngine;
 using Util;
@@ -7,24 +6,21 @@ using Util;
 //todo: fix bug with boot respawn, fix zoom etc.
 public class CameraController : MonoBehaviour
 {
+    public GameObject CameraLeftBound;
+    public GameObject CameraRightBound;
     private float _maxCameraOrthographicSize;
     private float _minCameraOrthographicSize;
-    private float _initialXPosition;
-    private float _maxDeltaX;
-    private float _previousDistance = CameraConstantsUtil.ZeroFloatValue;
     private Camera _camera;
     private Vector2 _firstTouchPosition = Vector2.zero;
     private static BootController _bootController;
+
     private void Start()
     {
         GetBootGameObject();
         var position = _camera.transform.position;
-        _initialXPosition = position.x;
         var orthographicSize = _camera.orthographicSize;
         _maxCameraOrthographicSize = orthographicSize + CameraConstantsUtil.MaxDeltaOrthographicSize * 2;
         _minCameraOrthographicSize = orthographicSize - CameraConstantsUtil.MaxDeltaOrthographicSize * 2;
-        _maxDeltaX = CalculateCameraXBorders(orthographicSize);
-        _maxDeltaX -= _maxDeltaX / 1.5f;
     }
 
     private void GetBootGameObject()
@@ -35,6 +31,7 @@ public class CameraController : MonoBehaviour
         {
             throw new CustomMissingComponentException(TagUtil.MainCamera);
         }
+
         _camera = GetComponent<Camera>();
     }
 
@@ -58,28 +55,32 @@ public class CameraController : MonoBehaviour
     {
         if (Input.touchCount == 2)
         {
-            var firstTouch = Input.touches[0];
-            var secondTouch = Input.touches[1];
-            var distance = Vector2.Distance(firstTouch.position, secondTouch.position);
-            if (Math.Abs(_previousDistance - CameraConstantsUtil.ZeroFloatValue) < 0.0001f)
-            {
-                _previousDistance = distance;
-            }
-            else
-            {
-                ScaleCamera(distance);
-            }
+            ScaleCamera();
         }
         else
         {
-            if (Input.touchCount == 1 && !_bootController.IsDragging 
-                && Math.Abs(_camera.orthographicSize - _maxCameraOrthographicSize) > 0.001f)
+            if (Input.touchCount == 1 && !_bootController.IsDragging)
             {
                 MoveCamera(Input.touches[0]);
             }
 
-            _previousDistance = CameraConstantsUtil.ZeroFloatValue;
         }
+    }
+
+    private void ScaleCamera()
+    {
+        var touchZero = Input.GetTouch(0);
+        var touchOne = Input.GetTouch(1);
+        var touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+        var touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+        var prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+        var touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+        var deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+        if (!_camera.orthographic) return;
+        var orthographicSize = _camera.orthographicSize;
+        orthographicSize += deltaMagnitudeDiff * CameraConstantsUtil.OrthographicZoomSpeed;
+        _camera.orthographicSize = Mathf.Max(orthographicSize, 0.1f);
+        CorrectScale();
     }
 
     private void MoveCamera(Touch touch)
@@ -96,69 +97,13 @@ public class CameraController : MonoBehaviour
 
     private void Move(Vector2 touchPosition)
     {
+        var position = transform.position;
         var worldTouchPosition = _camera.ScreenToWorldPoint(touchPosition);
         var worldFirstTouchPosition = _camera.ScreenToWorldPoint(_firstTouchPosition);
         var resultVector = -(worldTouchPosition - worldFirstTouchPosition);
-        var newTransformVector = new Vector3(resultVector.x, resultVector.y, 0);
-        transform.position = CorrectDeltaPosition(newTransformVector);
-    }
-
-    private Vector3 CorrectDeltaPosition(Vector3 newTransformVector)
-    {
-        var position = transform.position;
-        var currentDeltaX = newTransformVector.x * Time.deltaTime * CameraConstantsUtil.DeltaTimeCoefficient;
-        var currentDeltaY = newTransformVector.y * Time.deltaTime * CameraConstantsUtil.DeltaTimeCoefficient;
-        var newX = Mathf.Clamp(position.x + currentDeltaX, _initialXPosition - _maxDeltaX, 
-            _initialXPosition + _maxDeltaX);
-        if (Math.Abs(_initialXPosition - _maxDeltaX - newX) < 0.001f || Math.Abs(_initialXPosition + _maxDeltaX - newX) < 0.001f)
-        {
-            currentDeltaX = 0f;
-        }
-        //todo: zoom somehow works, need to set moving borders
-        return position + new Vector3(currentDeltaX, 0f, 0f);
-    }
-
-    private void ScaleCamera(float distance)
-    {
-        if (_previousDistance < distance)
-        {
-            _camera.orthographicSize =  _camera.orthographicSize - Time.deltaTime * distance / CameraConstantsUtil.DistanceCoefficient;
-        }
-        else if (_previousDistance > distance)
-            
-        {
-            var newOrthographicSize = _camera.orthographicSize + Time.deltaTime * distance / CameraConstantsUtil.DistanceCoefficient;
-            if (Math.Abs(_camera.orthographicSize - _maxCameraOrthographicSize) > 0.001f)
-            {
-                MoveBeforeZoomIfNeeded(newOrthographicSize);   
-            }
-            _camera.orthographicSize = newOrthographicSize;
-        }
-
-        CorrectScale();
-    }
-
-    private void MoveBeforeZoomIfNeeded(float orthographicSize)
-    {
-        var distanceBetweenX = _camera.transform.position.x - _initialXPosition;
-        
-        
-//        var position = _camera.transform.position;
-//        var deltaX = CalculateCameraXBorders(orthographicSize) * Time.deltaTime;
-//        if (position.x + deltaX > _initialXPosition + _maxDeltaX)
-//        {
-//            _camera.transform.position = new Vector3(position.x - deltaX, position.y, position.z);
-//        } else if (position.x - deltaX < _initialXPosition - _maxDeltaX)
-//        {
-//            _camera.transform.position = new Vector3(position.x + deltaX, position.y, position.z);
-//        }
-    }
-    
-    private float CalculateCameraXBorders(float orthographicSize)
-    {
-        var screenAspect = Screen.width / (float) Screen.height;
-        var camHalfWidth = screenAspect * orthographicSize;
-        return _initialXPosition + camHalfWidth;
+        var newPosition = position + resultVector * Time.deltaTime * CameraConstantsUtil.Speed;
+        var xTransform = Mathf.Clamp(newPosition.x, CameraLeftBound.transform.position.x, CameraRightBound.transform.position.x);
+        transform.position = new Vector3(xTransform, position.y, position.z);
     }
 
     private void CorrectScale()
