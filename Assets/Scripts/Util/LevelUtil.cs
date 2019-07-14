@@ -16,13 +16,12 @@ namespace Util
             CurrentLocation = 1;
         }
 
-        public static bool LoadNextLevel()
+        public static bool LoadNextLevel(int livesRemained)
         {
             var currentScene = SceneManager.GetActiveScene().name;
             GetCurrentLocationAndCurrentLevel(currentScene);
             CurrentLevel++;
             var sceneName = GetSceneName();
-
             if (GlobalConfiguration.IsDevMode())
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);

@@ -10,17 +10,19 @@ namespace Controller
     public class BootController : MonoBehaviour
     {
         public bool IsBootMoving { private set; get; }
+        public bool IsDragging { get; private set; }
         private Vector3 _initialPosition;
         private Vector3 _firstPosition = Vector3.zero;
+        private GameObject _slingShot;
+        private Vector3 _slingShotPosition = Vector3.zero;
         private Vector3 _lastPosition = Vector3.zero;
-        private Rigidbody _rigidBody = null;
+        private Rigidbody _rigidBody;
         private Camera _camera;
         private GoalController _goalController;
         private Vector3 _forceVector = Vector3.zero;
         private DateTime _bootKickedTime = DateTime.MinValue;
         private GameManagerUtil _gameManagerUtil;
         private bool _isLastBoot;
-        private bool _isDragging;
         private readonly List<GameObject> _dotPrefabs = new List<GameObject>();
 
         private void Start()
@@ -40,7 +42,7 @@ namespace Controller
         {
             if (Camera.main == null)
             {
-                throw new MissingTagException(TagUtil.Camera);
+                throw new MissingTagException(TagUtil.MainCamera);
             }
 
             _camera = Camera.main;
@@ -71,8 +73,22 @@ namespace Controller
                 throw new MissingTagException(TagUtil.SlingShot);
             }
 
-            var slingShotPosition = GameObject.FindGameObjectWithTag(TagUtil.SlingShot).transform.position;
-            _firstPosition = _camera.WorldToScreenPoint(slingShotPosition);
+            _slingShot = GameObject.FindGameObjectWithTag(TagUtil.SlingShot);
+            _slingShotPosition = _slingShot.transform.position;
+
+            if (GetComponent<BootController>() == null)
+            {
+                throw new CustomMissingComponentException(TagUtil.BootController);
+            }
+            
+            if (_slingShot.GetComponent<SlingShotController>() == null)
+            {
+                throw new CustomMissingComponentException(TagUtil.SlingShotController);
+            }
+            
+            var slingShotController = _slingShot.GetComponent<SlingShotController>();
+            slingShotController.BootController = GetComponent<BootController>();
+            slingShotController.Boot = gameObject;
         }
 
         private void Update()
@@ -81,6 +97,7 @@ namespace Controller
             {
                 if (Input.touches.Length == 1)
                 {
+                    _firstPosition = _camera.WorldToScreenPoint(_slingShotPosition);
                     ShowTrajectory();
                 }
                 else
@@ -113,7 +130,7 @@ namespace Controller
 
         private void ThrowBoot()
         {
-            if (!_isDragging) return;
+            if (!IsDragging) return;
 
             if (CorrectDirection())
             {
@@ -126,7 +143,7 @@ namespace Controller
                 transform.position = _initialPosition;
             }
 
-            _isDragging = false;
+            IsDragging = false;
         }
 
         private IEnumerator InstantiateNewBoot()
@@ -138,7 +155,7 @@ namespace Controller
         private void ShowTrajectory()
         {
             var touch = Input.touches[0];
-            if (!_isDragging)
+            if (!IsDragging)
             {
                 StartDraggingConfiguration(touch);
             }
@@ -156,7 +173,7 @@ namespace Controller
         private void StartDraggingConfiguration(Touch touch)
         {
             if (!IsBootHit(touch)) return;
-            _isDragging = true;
+            IsDragging = true;
             InstantiateDots();
         }
 
@@ -199,8 +216,7 @@ namespace Controller
 
         private void DraggingConfiguration(Touch touch)
         {
-            _lastPosition = touch.position;
-            ChangeBootPosition();
+            ChangeBootPosition(touch.position);
             if (CorrectDirection())
             {
                 if (_dotPrefabs.Count == 0)
@@ -216,30 +232,16 @@ namespace Controller
             }
         }
 
-        private void ChangeBootPosition()
+        private void ChangeBootPosition(Vector2 touchPosition)
         {
-            var screenPointToWorld = _camera.ScreenToWorldPoint(_lastPosition);
-            var xPosition = screenPointToWorld.x;
-            var yPosition = screenPointToWorld.y;
-            if (xPosition > _initialPosition.x + BootConstantsUtil.XDistanceConstraint)
-            {
-                xPosition = _initialPosition.x + BootConstantsUtil.XDistanceConstraint;
-            }
-            else if (xPosition < _initialPosition.x - BootConstantsUtil.XDistanceConstraint)
-            {
-                xPosition = _initialPosition.x - BootConstantsUtil.XDistanceConstraint;
-            }
-
-            if (yPosition > _initialPosition.y + BootConstantsUtil.YUpDistanceConstraint)
-            {
-                yPosition = _initialPosition.y + BootConstantsUtil.YUpDistanceConstraint;
-            }
-            else if (yPosition < _initialPosition.y - BootConstantsUtil.YDownDistanceConstraint)
-            {
-                yPosition = _initialPosition.y - BootConstantsUtil.YDownDistanceConstraint;
-            }
-
-            transform.position = new Vector3(xPosition, yPosition, BootConstantsUtil.ZFreezePosition);
+            var screenPointToWorld = _camera.ScreenToWorldPoint(touchPosition);
+            var xPosition = Mathf.Clamp(screenPointToWorld.x, _initialPosition.x - BootConstantsUtil.XDistanceConstraint,
+                _initialPosition.x + BootConstantsUtil.XDistanceConstraint);
+            var yPosition = Mathf.Clamp(screenPointToWorld.y, _initialPosition.y - BootConstantsUtil.YDownDistanceConstraint,
+                _initialPosition.y + BootConstantsUtil.YUpDistanceConstraint);
+            var position = new Vector3(xPosition, yPosition, BootConstantsUtil.ZFreezePosition);
+            transform.position = position;
+            _lastPosition = _camera.WorldToScreenPoint(position);
         }
 
         private void ClearDots()
@@ -257,11 +259,11 @@ namespace Controller
         {
             var mass = _rigidBody.mass;
             _forceVector = CalculateForce();
-            var calculatePosition = transform.position +
+            var calculatedPosition = transform.position +
                                     (_forceVector / mass) * elapsedTime
                                     + BootConstantsUtil.GravityVector * elapsedTime * elapsedTime / 2;
 
-            return calculatePosition;
+            return calculatedPosition;
         }
     }
 }

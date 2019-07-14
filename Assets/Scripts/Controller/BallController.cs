@@ -21,7 +21,7 @@ namespace Controller
 
 		private void OnCollisionEnter(Collision other)
 		{
-			if (other == null || !other.gameObject.transform.tag.Equals("Player")) return;
+			if (other == null || !other.gameObject.transform.tag.Equals(TagUtil.Player)) return;
 			_rigidBody.useGravity = true;
 		}
 		

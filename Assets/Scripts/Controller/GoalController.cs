@@ -21,7 +21,6 @@ namespace Controller
         private DateTime _noGoalDetectingTime = DateTime.MinValue;
         private SlingShotController _slingShotController;
         private bool _isLastBootBeenDestroyed = false;
-        private bool _isLastBoot = false;
         private void Start()
         {
             SetStartingLives();
@@ -87,7 +86,8 @@ namespace Controller
             _lives--;
             if (_lives > 0 && !_isGoal && !_isWin)
             {
-                _slingShotController.Boot = Instantiate(BootPrefab);
+                var boot = _slingShotController.Boot = Instantiate(BootPrefab);
+                CameraController.SetNewBoot(boot);
                 return true;
             }
 
@@ -112,7 +112,7 @@ namespace Controller
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other == null || !other.gameObject.tag.Equals("Ball")) return;
+            if (other == null || !other.gameObject.tag.Equals(TagUtil.Ball)) return;
             _isGoal = true;
             GoToNextLevel();
         }
@@ -147,7 +147,7 @@ namespace Controller
         private IEnumerator NextLevel()
         {
             yield return new WaitForSeconds(2);
-            if (LevelUtil.LoadNextLevel()) yield break;
+            if (LevelUtil.LoadNextLevel(_lives)) yield break;
             _isGoal = false;
             _isWin = true;
         }

@@ -5,23 +5,14 @@ using Util;
 
 public class SlingShotController : MonoBehaviour
 {
-    public GameObject Boot {private get; set; }
+    
     private Rigidbody _rigidBody;
-    private BootController _bootController;
+    public BootController BootController {private get; set; }
+    public GameObject Boot { private get; set; }
 
     private void Start()
     {
-        if (GameObject.FindGameObjectWithTag(TagUtil.Player) == null)
-        {
-            throw new MissingTagException(TagUtil.Player);
-        }
-
-        if (GameObject.FindGameObjectWithTag(TagUtil.Player).GetComponent<BootController>() == null)
-        {
-            throw new CustomMissingComponentException(TagUtil.BootController);
-        }
-        Boot = GameObject.FindGameObjectWithTag(TagUtil.Player);
-        _bootController = Boot.GetComponent<BootController>();
+        
         if (GetComponent<Rigidbody>() == null)
         {
             throw new CustomMissingComponentException(TagUtil.RigidBody);
@@ -37,10 +28,16 @@ public class SlingShotController : MonoBehaviour
             transform.position = Boot.transform.position;
         }
 
-        if (_bootController.IsBootMoving && _rigidBody.isKinematic)
+        if (BootController.IsBootMoving && _rigidBody.isKinematic)
         {
-            _rigidBody.isKinematic = false;
+            SetKinematic(false);
         }
+    }
+
+
+    public void SetKinematic(bool isKinematic)
+    {
+        _rigidBody.isKinematic = isKinematic;
     }
 
 }
