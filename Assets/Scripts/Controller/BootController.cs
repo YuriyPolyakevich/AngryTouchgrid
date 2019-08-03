@@ -27,59 +27,36 @@ namespace Controller
 
         private void Start()
         {
-            _initialPosition = transform.position;
-            if (GetComponent<Rigidbody>() == null)
+            _rigidBody = GetComponent<Rigidbody>();
+            if (_rigidBody == null)
             {
                 throw new CustomMissingComponentException(TagUtil.RigidBody);
             }
-
-            _rigidBody = GetComponent<Rigidbody>();
+            _initialPosition = transform.position;
             _rigidBody.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX;
             GetGameObjects();
         }
 
         private void GetGameObjects()
         {
-            if (Camera.main == null)
-            {
-                throw new MissingTagException(TagUtil.MainCamera);
-            }
+            GetCamera();
+            GetGoalController();
+            GetGameManagerUtil();
+            GetBootController();
+            GetSlingShotController();
+        }
 
-            _camera = Camera.main;
-            if (GameObject.FindGameObjectWithTag(TagUtil.GoalController) == null)
-            {
-                throw new MissingTagException(TagUtil.GoalController);
-            }
-
-            if (GameObject.FindGameObjectWithTag(TagUtil.GoalController).GetComponent<GoalController>() == null)
-            {
-                throw new CustomMissingComponentException(TagUtil.GoalController);
-            }
-
-            _goalController = GameObject.FindGameObjectWithTag(TagUtil.GoalController).GetComponent<GoalController>();
-            if (GameObject.FindGameObjectWithTag(TagUtil.GameController) == null)
-            {
-                throw new MissingTagException(TagUtil.GameController);
-            }
-
-            if (GameObject.FindGameObjectWithTag(TagUtil.GameController).GetComponent<GameManagerUtil>() == null)
-            {
-                throw new CustomMissingComponentException(TagUtil.GameManagerUtil);
-            }
-
-            _gameManagerUtil = GameObject.FindGameObjectWithTag(TagUtil.GameController).GetComponent<GameManagerUtil>();
-            if (GameObject.FindGameObjectWithTag(TagUtil.SlingShot) == null)
+        private void GetSlingShotController()
+        {
+            _slingShot = GameObject.FindGameObjectWithTag(TagUtil.SlingShot);
+            
+            if (_slingShot == null)
             {
                 throw new MissingTagException(TagUtil.SlingShot);
             }
 
-            _slingShot = GameObject.FindGameObjectWithTag(TagUtil.SlingShot);
             _slingShotPosition = _slingShot.transform.position;
 
-            if (GetComponent<BootController>() == null)
-            {
-                throw new CustomMissingComponentException(TagUtil.BootController);
-            }
             
             if (_slingShot.GetComponent<SlingShotController>() == null)
             {
@@ -89,6 +66,53 @@ namespace Controller
             var slingShotController = _slingShot.GetComponent<SlingShotController>();
             slingShotController.BootController = GetComponent<BootController>();
             slingShotController.Boot = gameObject;
+        }
+
+        private void GetBootController()
+        {
+            if (GetComponent<BootController>() == null)
+            {
+                throw new CustomMissingComponentException(TagUtil.BootController);
+            }   
+        }
+
+        private void GetGameManagerUtil()
+        {
+            if (GameObject.FindGameObjectWithTag(TagUtil.GameController) == null)
+            {
+                throw new MissingTagException(TagUtil.GameController);
+            }
+            _gameManagerUtil = GameObject.FindGameObjectWithTag(TagUtil.GameController).GetComponent<GameManagerUtil>();
+            
+            if (_gameManagerUtil == null)
+            {
+                throw new CustomMissingComponentException(TagUtil.GameManagerUtil);
+            }
+        }
+
+        private void GetGoalController()
+        {
+            if (GameObject.FindGameObjectWithTag(TagUtil.GoalController) == null)
+            {
+                throw new MissingTagException(TagUtil.GoalController);
+            }
+            
+            _goalController = GameObject.FindGameObjectWithTag(TagUtil.GoalController).GetComponent<GoalController>();
+
+            if (_goalController == null)
+            {
+                throw new CustomMissingComponentException(TagUtil.GoalController);
+            }
+
+        }
+
+        private void GetCamera()
+        {
+            if (_camera == null)
+            {
+                throw new MissingTagException(TagUtil.MainCamera);
+            }
+            _camera = Camera.main;
         }
 
         private void Update()
@@ -181,7 +205,7 @@ namespace Controller
         {
             for (var i = 0; i < BootConstantsUtil.NumOfDotsToShow; i++)
             {
-                var trajectoryDot = Instantiate(_gameManagerUtil.DotPrefab);
+                var trajectoryDot = Instantiate(_gameManagerUtil.dotPrefab);
                 _dotPrefabs.Add(trajectoryDot);
             }
         }

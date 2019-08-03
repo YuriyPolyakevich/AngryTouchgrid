@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class MovementController : MonoBehaviour {
 	
-	public float MovingSpeed;
+	[FormerlySerializedAs("MovingSpeed")] public float movingSpeed;
 	public Vector3 lowestPosition = Vector3.zero;
 	public Vector3 highestPosition = Vector3.zero;
-	public float rotationSpeed = 0;
 	private Vector3 _targetPosition;
 	
 	private const float ToleranceValue = 0.00001f;
@@ -37,10 +37,10 @@ public class MovementController : MonoBehaviour {
 			_targetPosition = lowestPosition;
 		}
 
-		if ((lowestPosition != Vector3.zero || highestPosition != Vector3.zero) && MovingSpeed > ToleranceValue)
+		if ((lowestPosition != Vector3.zero || highestPosition != Vector3.zero) && movingSpeed > ToleranceValue)
 		{
 			transform.position = 
-				Vector3.MoveTowards(transform.position, _targetPosition, Time.deltaTime * MovingSpeed);
+				Vector3.MoveTowards(transform.position, _targetPosition, Time.deltaTime * movingSpeed);
 		}
 	}
 }

@@ -35,7 +35,7 @@ public class SlingShotController : MonoBehaviour
     }
 
 
-    public void SetKinematic(bool isKinematic)
+    private void SetKinematic(bool isKinematic)
     {
         _rigidBody.isKinematic = isKinematic;
     }

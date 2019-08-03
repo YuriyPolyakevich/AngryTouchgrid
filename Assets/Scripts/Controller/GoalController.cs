@@ -63,20 +63,16 @@ namespace Controller
         {
             if (_isLost) return;
             if (_isWin) return;
-            if (_lives == 0 && !_isGoal && _isLastBootBeenDestroyed)
+            if (_lives != 0 || _isGoal || !_isLastBootBeenDestroyed) return;
+            if (_noGoalDetectingTime == DateTime.MinValue)
+                _noGoalDetectingTime = DateTime.Now;
+            var currentTime = DateTime.Now;
+            var timeDifference = (int) (currentTime - _noGoalDetectingTime).TotalMilliseconds;
+            if (timeDifference <= 2000) return;
+            _isLost = true;
+            if (GlobalConfiguration.IsDevMode())
             {
-                if (_noGoalDetectingTime == DateTime.MinValue)
-                    _noGoalDetectingTime = DateTime.Now;
-                var currentTime = DateTime.Now;
-                var timeDifference = (int) (currentTime - _noGoalDetectingTime).TotalMilliseconds;
-                if (timeDifference > 2000)
-                {
-                    _isLost = true;
-                    if (GlobalConfiguration.IsDevMode())
-                    {
-                        StartCoroutine(ReturnObjectsToStartPositions());
-                    }
-                }
+                StartCoroutine(ReturnObjectsToStartPositions());
             }
 
         }
@@ -84,14 +80,11 @@ namespace Controller
         public bool DecreaseLife()
         {
             _lives--;
-            if (_lives > 0 && !_isGoal && !_isWin)
-            {
-                var boot = _slingShotController.Boot = Instantiate(BootPrefab);
-                CameraController.SetNewBoot(boot);
-                return true;
-            }
+            if (_lives <= 0 || _isGoal || _isWin) return false;
+            var boot = _slingShotController.Boot = Instantiate(BootPrefab);
+            CameraController.SetNewBoot(boot);
+            return true;
 
-            return false;
         }
 
         public void SetLastBootDestroyed()
@@ -147,7 +140,7 @@ namespace Controller
         private IEnumerator NextLevel()
         {
             yield return new WaitForSeconds(2);
-            if (LevelUtil.LoadNextLevel(_lives)) yield break;
+            if (LevelUtil.LoadNextLevel()) yield break;
             _isGoal = false;
             _isWin = true;
         }

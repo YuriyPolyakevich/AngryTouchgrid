@@ -1,13 +1,18 @@
 ﻿using Configuration.Exception;
 using Controller;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Util;
 
 //todo: fix bug with boot respawn, fix zoom etc.
 public class CameraController : MonoBehaviour
 {
-    public GameObject CameraLeftBound;
-    public GameObject CameraRightBound;
+    [FormerlySerializedAs("CameraLeftBound")]
+    public GameObject cameraLeftBound;
+
+    [FormerlySerializedAs("CameraRightBound")]
+    public GameObject cameraRightBound;
+
     private float _maxCameraOrthographicSize;
     private float _minCameraOrthographicSize;
     private Camera _camera;
@@ -17,7 +22,11 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         GetBootGameObject();
-        var position = _camera.transform.position;
+        SetCameraOrthographicSizeConstraints();
+    }
+
+    private void SetCameraOrthographicSizeConstraints()
+    {
         var orthographicSize = _camera.orthographicSize;
         _maxCameraOrthographicSize = orthographicSize + CameraConstantsUtil.MaxDeltaOrthographicSize * 2;
         _minCameraOrthographicSize = orthographicSize - CameraConstantsUtil.MaxDeltaOrthographicSize * 2;
@@ -26,13 +35,11 @@ public class CameraController : MonoBehaviour
     private void GetBootGameObject()
     {
         FindBootGameObject();
-
-        if (GetComponent<Camera>() == null)
+        _camera = GetComponent<Camera>();
+        if (_camera == null)
         {
             throw new CustomMissingComponentException(TagUtil.MainCamera);
         }
-
-        _camera = GetComponent<Camera>();
     }
 
     private static void FindBootGameObject()
@@ -42,13 +49,14 @@ public class CameraController : MonoBehaviour
         {
             throw new MissingTagException(TagUtil.Player);
         }
-
-        if (bootGameObject.GetComponent<BootController>() == null)
+        
+        _bootController = bootGameObject.GetComponent<BootController>();
+        
+        if (_bootController == null)
         {
             throw new CustomMissingComponentException(TagUtil.BootController);
         }
 
-        _bootController = bootGameObject.GetComponent<BootController>();
     }
 
     private void Update()
@@ -63,7 +71,6 @@ public class CameraController : MonoBehaviour
             {
                 MoveCamera(Input.touches[0]);
             }
-
         }
     }
 
@@ -102,7 +109,8 @@ public class CameraController : MonoBehaviour
         var worldFirstTouchPosition = _camera.ScreenToWorldPoint(_firstTouchPosition);
         var resultVector = -(worldTouchPosition - worldFirstTouchPosition);
         var newPosition = position + resultVector * Time.deltaTime * CameraConstantsUtil.Speed;
-        var xTransform = Mathf.Clamp(newPosition.x, CameraLeftBound.transform.position.x, CameraRightBound.transform.position.x);
+        var xTransform = Mathf.Clamp(newPosition.x, cameraLeftBound.transform.position.x,
+            cameraRightBound.transform.position.x);
         transform.position = new Vector3(xTransform, position.y, position.z);
     }
 

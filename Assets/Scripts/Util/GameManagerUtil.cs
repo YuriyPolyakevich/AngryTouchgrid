@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Util
 {    
     public class GameManagerUtil : MonoBehaviour
     {
-        public GameObject DotPrefab;
+        [FormerlySerializedAs("DotPrefab")] public GameObject dotPrefab;
     }
 
 }

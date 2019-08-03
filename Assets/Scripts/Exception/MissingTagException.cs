@@ -7,6 +7,5 @@ namespace Configuration.Exception
             
         }
         
-        
     }
 }

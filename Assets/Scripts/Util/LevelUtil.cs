@@ -16,7 +16,7 @@ namespace Util
             CurrentLocation = 1;
         }
 
-        public static bool LoadNextLevel(int livesRemained)
+        public static bool LoadNextLevel()
         {
             var currentScene = SceneManager.GetActiveScene().name;
             GetCurrentLocationAndCurrentLevel(currentScene);
