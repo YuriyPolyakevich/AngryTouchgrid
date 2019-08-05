@@ -108,11 +108,11 @@ namespace Controller
 
         private void GetCamera()
         {
+            _camera = Camera.main;
             if (_camera == null)
             {
                 throw new MissingTagException(TagUtil.MainCamera);
             }
-            _camera = Camera.main;
         }
 
         private void Update()
