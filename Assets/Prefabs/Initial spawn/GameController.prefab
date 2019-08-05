@@ -48,7 +48,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1788975449964472}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b4cf9cf26cc2154fb04f3f445b97d7c, type: 3}
+  m_Script: {fileID: 11500000, guid: 68eb26614c80ce74fbe97675ad47ce71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dotPrefab: {fileID: 1835448398654350, guid: 9206c73727c438c4789489e4b27391e5, type: 2}
