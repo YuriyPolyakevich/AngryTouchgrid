@@ -1,0 +1,138 @@
+fileFormatVersion: 2
+guid: a38a29ff8c0124248b851d5b542c36a8
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: shoelaces
+    100002: //RootNode
+    100004: center
+    100006: column
+    100008: left
+    100010: right
+    100012: right_end
+    100014: "\u0410\u0440\u043C\u0430\u0442\u0443\u0440\u0430"
+    100016: left_end
+    100018: Rigg
+    100020: left.001
+    100022: right.001
+    100024: Target
+    400000: shoelaces
+    400002: //RootNode
+    400004: center
+    400006: column
+    400008: left
+    400010: right
+    400012: right_end
+    400014: "\u0410\u0440\u043C\u0430\u0442\u0443\u0440\u0430"
+    400016: left_end
+    400018: Rigg
+    400020: left.001
+    400022: right.001
+    400024: Target
+    2100000: No Name
+    2300000: shoelaces
+    2300002: //RootNode
+    2300004: column
+    2300006: Target
+    3300000: shoelaces
+    3300002: //RootNode
+    3300004: column
+    3300006: Target
+    4300000: column
+    4300002: shoelaces
+    4300004: Target
+    9500000: //RootNode
+    11100000: //RootNode
+    11100002: column
+    11100004: left
+    11100006: left.001
+    11100008: left_end
+    11100010: right
+    11100012: right.001
+    11100014: right_end
+    11100016: shoelaces
+    11100018: Target
+    11100020: "\u0410\u0440\u043C\u0430\u0442\u0443\u0440\u0430"
+    13700000: shoelaces
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 0
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
