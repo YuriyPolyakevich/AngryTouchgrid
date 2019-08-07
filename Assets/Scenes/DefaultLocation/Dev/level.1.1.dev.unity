@@ -427,6 +427,11 @@ Prefab:
       propertyPath: cameraRightBound
       value: 
       objectReference: {fileID: 483437360}
+    - target: {fileID: 20451480599746388, guid: 4590e4e43b2e78e44829cbdb16c4d0a0,
+        type: 2}
+      propertyPath: orthographic
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4590e4e43b2e78e44829cbdb16c4d0a0, type: 2}
   m_IsPrefabParent: 0
