@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4507530997427626}
   - component: {fileID: 33706382023626112}
   - component: {fileID: 23937407996693444}
-  - component: {fileID: 114486727044951372}
   - component: {fileID: 54346106812412370}
   - component: {fileID: 136058255502898756}
+  - component: {fileID: 114923012860585858}
   m_Layer: 0
   m_Name: Sneakers
   m_TagString: Player
@@ -101,7 +101,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114486727044951372
+--- !u!114 &114923012860585858
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1045119499136750}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d42ac80324674741b9b58fa9fabf20e, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e57079b83e36504cad6e6c791c8d934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!136 &136058255502898756

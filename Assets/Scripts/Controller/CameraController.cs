@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour
     private float _minCameraOrthographicSize;
     private Camera _camera;
     private Vector2 _firstTouchPosition = Vector2.zero;
-    private static BootController _bootController;
+    private static BootPerspectiveController _bootController;
 
     private void Start()
     {
@@ -50,7 +50,7 @@ public class CameraController : MonoBehaviour
             throw new MissingTagException(TagUtil.Player);
         }
         
-        _bootController = bootGameObject.GetComponent<BootController>();
+        _bootController = bootGameObject.GetComponent<BootPerspectiveController>();
         
         if (_bootController == null)
         {
@@ -122,6 +122,6 @@ public class CameraController : MonoBehaviour
 
     public static void SetNewBoot(GameObject boot)
     {
-        _bootController = boot.GetComponent<BootController>();
+        _bootController = boot.GetComponent<BootPerspectiveController>();
     }
 }

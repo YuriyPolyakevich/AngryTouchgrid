@@ -7,7 +7,7 @@ public class SlingShotController : MonoBehaviour
 {
     
     private Rigidbody _rigidBody;
-    public BootController BootController {private get; set; }
+    public BootPerspectiveController BootPerspectiveController { private get; set; }
     public GameObject Boot { private get; set; }
 
     private void Start()
@@ -28,7 +28,7 @@ public class SlingShotController : MonoBehaviour
             transform.position = Boot.transform.position;
         }
 
-        if (BootController.IsBootMoving && _rigidBody.isKinematic)
+        if (BootPerspectiveController.IsBootMoving && _rigidBody.isKinematic)
         {
             SetKinematic(false);
         }
